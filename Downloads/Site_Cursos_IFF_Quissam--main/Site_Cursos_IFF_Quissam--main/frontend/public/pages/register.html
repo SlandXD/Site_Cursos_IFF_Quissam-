@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar conta — Construct Academy</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="auth-page">
+
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <div class="auth-card">
+    <a href="/" class="auth-logo">
+      <span class="logo-icon">◈</span>
+      Construct<strong>Academy</strong>
+    </a>
+
+    <h1>Crie sua conta</h1>
+    <p class="subtitle">Acesso gratuito à primeira trilha. Sem cartão.</p>
+
+    <div class="form-error" id="formError"></div>
+
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="name">Seu nome</label>
+        <input type="text" id="name" placeholder="Como quer ser chamado?" required autocomplete="name" />
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="seu@email.com" required autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" placeholder="Mínimo 6 caracteres" required minlength="6" autocomplete="new-password" />
+      </div>
+      <div class="strength-bar" id="strengthBar" style="display:none">
+        <div class="strength-fill" id="strengthFill"></div>
+      </div>
+      <div class="strength-label" id="strengthLabel" style="font-size:.75rem;color:var(--text3);margin-top:4px;margin-bottom:12px;"></div>
+      <button type="submit" class="btn-form" id="btnRegister">Criar conta grátis</button>
+    </form>
+
+    <p class="auth-footer">
+      Já tem conta? <a href="login.html">Entrar</a>
+    </p>
+  </div>
+
+  <style>
+    .strength-bar {
+      height: 4px; background: var(--border); border-radius: 99px;
+      overflow: hidden; margin-top: 6px;
+    }
+    .strength-fill {
+      height: 100%; border-radius: 99px;
+      transition: width .3s, background .3s;
+    }
+  </style>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    if (localStorage.getItem('ca_token')) {
+      window.location.href = 'dashboard.html';
+    }
+
+    // Indicador de força de senha
+    const passInput    = document.getElementById('password');
+    const strengthBar  = document.getElementById('strengthBar');
+    const strengthFill = document.getElementById('strengthFill');
+    const strengthLabel= document.getElementById('strengthLabel');
+
+    passInput.addEventListener('input', () => {
+      const v = passInput.value;
+      if (!v) { strengthBar.style.display = 'none'; return; }
+      strengthBar.style.display = 'block';
+
+      let score = 0;
+      if (v.length >= 6)  score++;
+      if (v.length >= 10) score++;
+      if (/[A-Z]/.test(v)) score++;
+      if (/[0-9]/.test(v)) score++;
+      if (/[^A-Za-z0-9]/.test(v)) score++;
+
+      const levels = [
+        { pct: '20%', color: '#ef4444', label: 'Muito fraca' },
+        { pct: '40%', color: '#f97316', label: 'Fraca' },
+        { pct: '60%', color: '#f59e0b', label: 'Razoável' },
+        { pct: '80%', color: '#22c55e', label: 'Boa' },
+        { pct: '100%',color: '#16a34a', label: 'Excelente' },
+      ];
+      const lvl = levels[Math.min(score - 1, 4)] || levels[0];
+      strengthFill.style.width      = lvl.pct;
+      strengthFill.style.background = lvl.color;
+      strengthLabel.textContent     = lvl.label;
+      strengthLabel.style.color     = lvl.color;
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn  = document.getElementById('btnRegister');
+      const err  = document.getElementById('formError');
+      const name = document.getElementById('name').value.trim();
+      const email= document.getElementById('email').value.trim();
+      const pass = document.getElementById('password').value;
+
+      if (pass.length < 6) {
+        err.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+        err.classList.add('show');
+        return;
+      }
+
+      btn.textContent = 'Criando conta...';
+      btn.disabled = true;
+      err.classList.remove('show');
+
+      try {
+        const data = await API.post('/auth/register', { name, email, password: pass });
+        localStorage.setItem('ca_token', data.token);
+        localStorage.setItem('ca_user', JSON.stringify(data.user));
+        window.location.href = 'dashboard.html';
+      } catch (ex) {
+        err.textContent = ex.message || 'Erro ao criar conta.';
+        err.classList.add('show');
+        btn.textContent = 'Criar conta grátis';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

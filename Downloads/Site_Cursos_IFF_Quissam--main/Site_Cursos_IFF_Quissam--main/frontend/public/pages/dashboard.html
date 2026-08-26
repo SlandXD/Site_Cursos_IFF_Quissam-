@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meus Cursos — Construct Academy</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/" class="sidebar-logo">
+        <span class="logo-icon">◈</span>
+        Construct<strong>Academy</strong>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">Menu</div>
+      <a href="dashboard.html" class="sidebar-link active">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Início
+      </a>
+      <a href="cursos.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Trilhas
+      </a>
+      <a href="certificados.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6" stroke="currentColor" stroke-width="1.8"/><path d="M9 21l3-3 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Certificados
+      </a>
+      <div class="sidebar-section" style="margin-top:12px">Conta</div>
+      <a href="perfil.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Perfil
+      </a>
+      <a href="#" class="sidebar-link" id="logoutBtn">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sair
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div>
+          <div class="user-name" id="sidebarName">Carregando...</div>
+          <div class="user-level" id="sidebarLevel">Nível 1</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <header class="top-bar">
+      <button class="nav-toggle" id="sidebarToggle" aria-label="Menu" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px">
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+      </button>
+      <span class="top-bar-title">Início</span>
+      <div class="xp-bar">
+        <span id="topXP">0 XP</span>
+        <div class="xp-progress-track">
+          <div class="xp-progress-fill" id="topXPFill" style="width:0%"></div>
+        </div>
+        <span id="topLevel">Nv 1</span>
+      </div>
+    </header>
+
+    <div class="page-content">
+      <!-- Boas-vindas -->
+      <div style="margin-bottom:32px">
+        <h1 style="font-size:1.6rem;font-weight:800;margin-bottom:6px">Olá, <span id="welcomeName">aluno</span> 👋</h1>
+        <p style="color:var(--text2);font-size:.9rem">Continue de onde parou. Você está indo muito bem.</p>
+      </div>
+
+      <!-- Stats rápidas -->
+      <div class="dash-stats" id="dashStats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:36px"></div>
+
+      <!-- Continuar trilha -->
+      <div style="margin-bottom:36px">
+        <h2 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">Continuar onde parei</h2>
+        <div id="continueCard" style="background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+          <div id="continueRing" class="progress-ring"></div>
+          <div style="flex:1">
+            <div style="font-size:.75rem;color:var(--accent2);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px" id="continueCourse">—</div>
+            <h3 style="font-size:1rem;font-weight:700;margin-bottom:4px" id="continueLesson">Nenhuma trilha iniciada</h3>
+            <p style="font-size:.83rem;color:var(--text2)" id="continueDesc">Acesse a aba Trilhas para começar.</p>
+          </div>
+          <a href="cursos.html" class="btn-primary" id="continueBtn" style="white-space:nowrap">Ir para trilhas</a>
+        </div>
+      </div>
+
+      <!-- Todas as trilhas -->
+      <div>
+        <h2 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">Suas trilhas</h2>
+        <div id="trilhasList" class="modules-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script>
+  requireAuth();
+
+  const user = JSON.parse(localStorage.getItem('ca_user') || '{}');
+  if (user.role === 'admin') window.location.href = 'admin.html';
+
+  document.getElementById('sidebarToggle').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+  document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('ca_token');
+    localStorage.removeItem('ca_user');
+    window.location.href = '/pages/login.html';
+  });
+
+  async function loadDashboard() {
+    try {
+      const data = await API.get('/student/dashboard');
+      const u = data.user;
+
+      // Sidebar
+      document.getElementById('sidebarAvatar').textContent = u.name.charAt(0).toUpperCase();
+      document.getElementById('sidebarName').textContent   = u.name;
+      document.getElementById('sidebarLevel').textContent  = `Nível ${u.level} — ${u.xp} XP`;
+      document.getElementById('welcomeName').textContent   = u.name.split(' ')[0];
+
+      // XP bar
+      const xpForNext = u.level * 100;
+      const pct = Math.min((u.xp % xpForNext) / xpForNext * 100, 100);
+      document.getElementById('topXP').textContent     = `${u.xp} XP`;
+      document.getElementById('topXPFill').style.width = pct + '%';
+      document.getElementById('topLevel').textContent  = `Nv ${u.level}`;
+
+      // Stats
+      const stats = [
+        { label: 'Aulas concluídas', value: data.completedLessons, color: 'var(--accent2)' },
+        { label: 'Trilhas em andamento', value: data.activeCourses,  color: 'var(--yellow)'  },
+        { label: 'Certificados',          value: data.certificates,   color: 'var(--green)'   },
+        { label: 'Sequência (dias)',       value: data.streak,         color: '#f97316'        },
+      ];
+      document.getElementById('dashStats').innerHTML = stats.map(s => `
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px">
+          <div style="font-size:.75rem;color:var(--text3);margin-bottom:6px">${s.label}</div>
+          <div style="font-size:1.8rem;font-weight:800;color:${s.color}">${s.value}</div>
+        </div>
+      `).join('');
+
+      // Continue card
+      if (data.lastLesson) {
+        const ll = data.lastLesson;
+        buildProgressRing(document.getElementById('continueRing'), ll.progress, 64, 5);
+        document.getElementById('continueCourse').textContent = ll.courseName;
+        document.getElementById('continueLesson').textContent = ll.lessonName;
+        document.getElementById('continueDesc').textContent   = `Módulo ${ll.moduleIndex} • ${Math.round(ll.progress)}% concluído`;
+        const btn = document.getElementById('continueBtn');
+        btn.textContent = 'Continuar aula';
+        btn.href = `player.html?course=${ll.courseId}&lesson=${ll.lessonId}`;
+      }
+
+      // Trilhas list
+      const list = document.getElementById('trilhasList');
+      list.innerHTML = data.enrollments.map(e => `
+        <div class="module-item ${e.progress === 100 ? 'completed' : ''}" onclick="window.location.href='cursos.html?id=${e.courseId}'">
+          <div class="module-status ${e.progress === 100 ? 'done' : 'curr'}">
+            ${e.progress === 100 ? '✓' : '▶'}
+          </div>
+          <div class="module-info">
+            <h4>${e.courseName}</h4>
+            <span>${e.completedLessons}/${e.totalLessons} aulas • ${Math.round(e.progress)}% concluído</span>
+          </div>
+          <span class="module-badge ${e.progress === 100 ? 'badge-done' : 'badge-current'}">
+            ${e.progress === 100 ? 'Concluído' : 'Em andamento'}
+          </span>
+        </div>
+      `).join('') || '<p style="color:var(--text3);font-size:.88rem">Nenhuma trilha iniciada. <a href="cursos.html" style="color:var(--accent2)">Ver trilhas disponíveis</a></p>';
+
+    } catch (err) {
+      console.error(err);
+      showToast('Erro ao carregar dashboard', 'error');
+    }
+  }
+
+  loadDashboard();
+</script>
+</body>
+</html>

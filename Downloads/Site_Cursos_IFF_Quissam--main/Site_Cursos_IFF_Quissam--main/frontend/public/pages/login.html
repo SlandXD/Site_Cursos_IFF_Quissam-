@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrar — Construct Academy</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="auth-page">
+
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <div class="auth-card">
+    <a href="/" class="auth-logo">
+      <span class="logo-icon">◈</span>
+      Construct<strong>Academy</strong>
+    </a>
+
+    <h1>Bem-vindo de volta</h1>
+    <p class="subtitle">Entre na sua conta para continuar aprendendo.</p>
+
+    <div class="form-error" id="formError"></div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="seu@email.com" required autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" />
+      </div>
+      <button type="submit" class="btn-form" id="btnLogin">Entrar</button>
+    </form>
+
+    <p class="auth-footer">
+      Não tem conta? <a href="register.html">Criar conta grátis</a>
+    </p>
+  </div>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // Redirecionar se já logado
+    if (localStorage.getItem('ca_token')) {
+      const user = JSON.parse(localStorage.getItem('ca_user') || '{}');
+      window.location.href = user.role === 'admin' ? 'admin.html' : 'dashboard.html';
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn   = document.getElementById('btnLogin');
+      const err   = document.getElementById('formError');
+      const email = document.getElementById('email').value.trim();
+      const pass  = document.getElementById('password').value;
+
+      btn.textContent = 'Entrando...';
+      btn.disabled = true;
+      err.classList.remove('show');
+
+      try {
+        const data = await API.post('/auth/login', { email, password: pass });
+        localStorage.setItem('ca_token', data.token);
+        localStorage.setItem('ca_user', JSON.stringify(data.user));
+        window.location.href = data.user.role === 'admin' ? 'admin.html' : 'dashboard.html';
+      } catch (ex) {
+        err.textContent = ex.message || 'E-mail ou senha incorretos.';
+        err.classList.add('show');
+        btn.textContent = 'Entrar';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

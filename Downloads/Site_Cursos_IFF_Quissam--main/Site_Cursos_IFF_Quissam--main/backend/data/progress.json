@@ -1,0 +1,35 @@
+[
+  {
+    "userId": "74f8b553-c63e-4714-b11a-0c41809c04f6",
+    "courseId": "3e99b997-6c4b-40ce-8ac1-4a7dc43b4445",
+    "completedLessons": [
+      "602b9bce-4886-4478-af77-ef07416c9859"
+    ],
+    "activityScores": {},
+    "completed": false,
+    "enrolledAt": "2026-08-26T17:46:37.639Z"
+  },
+  {
+    "userId": "6f9549d1-befe-4f4a-9278-57d954e6423c",
+    "courseId": "3e99b997-6c4b-40ce-8ac1-4a7dc43b4445",
+    "completedLessons": [
+      "602b9bce-4886-4478-af77-ef07416c9859"
+    ],
+    "activityScores": {},
+    "completed": false,
+    "enrolledAt": "2026-08-26T17:47:42.353Z"
+  },
+  {
+    "userId": "2d69e685-be8a-418f-9f4b-d8b3a74a1650",
+    "courseId": "3e99b997-6c4b-40ce-8ac1-4a7dc43b4445",
+    "completedLessons": [
+      "602b9bce-4886-4478-af77-ef07416c9859",
+      "3b2a7146-ceb4-4dcc-b59b-8c936e1fe283"
+    ],
+    "activityScores": {
+      "3b2a7146-ceb4-4dcc-b59b-8c936e1fe283": 100
+    },
+    "completed": false,
+    "enrolledAt": "2026-08-26T17:47:58.135Z"
+  }
+]

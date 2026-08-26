@@ -1,0 +1,106 @@
+[
+  {
+    "id": "3e99b997-6c4b-40ce-8ac1-4a7dc43b4445",
+    "name": "Primeiros Passos no Construct 3",
+    "shortDesc": "Interface, eventos básicos e seu primeiro jogo.",
+    "description": "Aprenda do zero a criar projetos no Construct 3. Vamos cobrir a interface do editor, criação de sprites, lógica de eventos e exportação.",
+    "level": "Iniciante",
+    "emoji": "🎮",
+    "duration": "~4h",
+    "featured": true,
+    "lessons": [
+      {
+        "id": "602b9bce-4886-4478-af77-ef07416c9859",
+        "title": "Conhecendo a interface do Construct 3",
+        "type": "video",
+        "videoType": "youtube",
+        "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "duration": "12m",
+        "requiredPercent": 80,
+        "description": "Tour completo pela interface, abas principais e configurações iniciais."
+      },
+      {
+        "id": "3b2a7146-ceb4-4dcc-b59b-8c936e1fe283",
+        "title": "Atividade: Identifique os painéis",
+        "type": "activity",
+        "activityTitle": "Teste seus conhecimentos sobre a interface",
+        "questions": [
+          {
+            "question": "Qual painel exibe todos os objetos do projeto?",
+            "options": [
+              "Layout",
+              "Project Bar",
+              "Event Sheet",
+              "Properties"
+            ],
+            "correctIndex": 1,
+            "explanation": "A Project Bar (barra de projetos) lista todos os objetos, layouts e arquivos do projeto."
+          },
+          {
+            "question": "Onde você escreve a lógica do jogo no Construct 3?",
+            "options": [
+              "Layout View",
+              "Event Sheet",
+              "Properties",
+              "Animations"
+            ],
+            "correctIndex": 1,
+            "explanation": "O Event Sheet é onde toda a lógica é criada através de condições e ações."
+          },
+          {
+            "question": "O que é um \"Layout\" no Construct 3?",
+            "options": [
+              "Um arquivo de som",
+              "Uma tela/fase do jogo",
+              "Um tipo de sprite",
+              "Um plugin externo"
+            ],
+            "correctIndex": 1,
+            "explanation": "O Layout é equivalente a uma cena ou fase do seu jogo."
+          }
+        ]
+      },
+      {
+        "id": "ac752637-a0e9-45dd-bb5c-2e341150aa64",
+        "title": "Criando seu primeiro sprite e movimento",
+        "type": "video",
+        "videoType": "youtube",
+        "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "duration": "18m",
+        "requiredPercent": 80,
+        "description": "Importe imagens, crie animações básicas e adicione movimento com o teclado."
+      },
+      {
+        "id": "b481e4a5-dc7c-4582-9771-b7a7914dea9e",
+        "title": "Atividade: Sprite em movimento",
+        "type": "activity",
+        "activityTitle": "Lógica de eventos e movimento",
+        "questions": [
+          {
+            "question": "Qual behavior permite movimento 8 direções no Construct 3?",
+            "options": [
+              "Platform",
+              "8 Direction",
+              "Physics",
+              "Bullet"
+            ],
+            "correctIndex": 1,
+            "explanation": "O behavior \"8 Direction\" habilita movimento em 8 direções usando o teclado."
+          },
+          {
+            "question": "O que é uma \"condição\" em um evento?",
+            "options": [
+              "A ação executada",
+              "O gatilho que dispara a ação",
+              "Um tipo de objeto",
+              "Uma animação"
+            ],
+            "correctIndex": 1,
+            "explanation": "A condição define QUANDO um evento deve ocorrer (ex: tecla pressionada, colisão)."
+          }
+        ]
+      }
+    ],
+    "createdAt": "2026-08-26T17:46:15.171Z"
+  }
+]

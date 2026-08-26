@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Construct Academy — Aprenda Construct 3 do Zero</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="logo-icon">◈</span>
+        Construct<strong>Academy</strong>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#trilhas">Trilhas</a></li>
+        <li><a href="#depoimentos">Alunos</a></li>
+        <li><a href="pages/login.html" class="btn-nav-login">Entrar</a></li>
+        <li><a href="pages/register.html" class="btn-nav-cta">Começar grátis</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-grid"></div>
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Plataforma oficial de Construct 3
+      </div>
+      <h1 class="hero-title">
+        Crie seus próprios<br/>
+        <span class="gradient-text">jogos do zero</span><br/>
+        com Construct 3
+      </h1>
+      <p class="hero-subtitle">
+        Trilhas de aprendizado estruturadas, do iniciante ao avançado. 
+        Vídeo aulas, atividades práticas e projetos reais que você sai da plataforma publicando.
+      </p>
+      <div class="hero-actions">
+        <a href="pages/register.html" class="btn-primary">
+          Começar agora — é grátis
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#trilhas" class="btn-ghost">Ver as trilhas</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <strong id="count-alunos">0</strong>
+          <span>Alunos ativos</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <strong id="count-aulas">0</strong>
+          <span>Aulas publicadas</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <strong id="count-projetos">0</strong>
+          <span>Projetos entregues</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="editor-mockup">
+        <div class="editor-bar">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="editor-title">meu-jogo.c3p</span>
+        </div>
+        <div class="editor-body">
+          <div class="code-line"><span class="kw">evento</span> <span class="fn">Início do Layout</span></div>
+          <div class="code-line indent"><span class="kw">ação</span> Sprite → <span class="fn">Criar objeto</span></div>
+          <div class="code-line indent"><span class="kw">ação</span> Score → <span class="fn">Definir valor</span> <span class="num">0</span></div>
+          <div class="code-line">&nbsp;</div>
+          <div class="code-line"><span class="kw">evento</span> <span class="fn">Teclado: Seta cima</span></div>
+          <div class="code-line indent"><span class="kw">ação</span> Player → <span class="fn">Mover</span> <span class="num">↑</span></div>
+          <div class="code-line">&nbsp;</div>
+          <div class="code-line"><span class="kw">evento</span> <span class="fn">Colisão Player — Inimigo</span></div>
+          <div class="code-line indent"><span class="kw">ação</span> Sistema → <span class="fn">Reiniciar layout</span></div>
+          <div class="cursor-blink">|</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="section-sobre" id="sobre">
+    <div class="container">
+      <div class="section-label">Como funciona</div>
+      <h2 class="section-title">Uma trilha clara, do começo ao fim</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <h3>Assista a aula</h3>
+          <p>Cada módulo começa com uma vídeo aula objetiva, direto ao ponto, sem enrolação.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <h3>Faça a atividade</h3>
+          <p>Depois do vídeo, uma atividade prática reforça exatamente o que você acabou de aprender.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <h3>Avance na trilha</h3>
+          <p>Só após completar a etapa atual o próximo conteúdo é liberado. Sem pular etapas.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <h3>Ganhe seu certificado</h3>
+          <p>Ao terminar o módulo você recebe um certificado e sobe de nível na plataforma.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRILHAS -->
+  <section class="section-trilhas" id="trilhas">
+    <div class="container">
+      <div class="section-label">Trilhas disponíveis</div>
+      <h2 class="section-title">Escolha seu ponto de partida</h2>
+      <div class="trilhas-grid" id="trilhasGrid">
+        <!-- Carregado via JS -->
+        <div class="trilha-card">
+          <div class="trilha-icon trilha-icon--starter">🎮</div>
+          <div class="trilha-level">Iniciante</div>
+          <h3>Primeiros Passos</h3>
+          <p>Interface, eventos básicos, sprites e seu primeiro jogo completo.</p>
+          <div class="trilha-meta">
+            <span>8 aulas</span>
+            <span>·</span>
+            <span>~4h</span>
+          </div>
+          <a href="pages/login.html" class="btn-trilha">Acessar trilha</a>
+        </div>
+        <div class="trilha-card featured">
+          <div class="trilha-badge-feat">Mais popular</div>
+          <div class="trilha-icon trilha-icon--mid">⚔️</div>
+          <div class="trilha-level">Intermediário</div>
+          <h3>Plataformer Completo</h3>
+          <p>Física, colisões, inimigos com IA, HUD, saves e exportação para web.</p>
+          <div class="trilha-meta">
+            <span>14 aulas</span>
+            <span>·</span>
+            <span>~8h</span>
+          </div>
+          <a href="pages/login.html" class="btn-trilha">Acessar trilha</a>
+        </div>
+        <div class="trilha-card">
+          <div class="trilha-icon trilha-icon--adv">🚀</div>
+          <div class="trilha-level">Avançado</div>
+          <h3>Jogo Multiplayer</h3>
+          <p>Multiplayer peer-to-peer, sincronização de estado e ranking online.</p>
+          <div class="trilha-meta">
+            <span>12 aulas</span>
+            <span>·</span>
+            <span>~7h</span>
+          </div>
+          <a href="pages/login.html" class="btn-trilha">Acessar trilha</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEPOIMENTOS -->
+  <section class="section-depo" id="depoimentos">
+    <div class="container">
+      <div class="section-label">Alunos</div>
+      <h2 class="section-title">O que estão dizendo</h2>
+      <div class="depo-grid">
+        <div class="depo-card">
+          <div class="depo-stars">★★★★★</div>
+          <p>"Em 2 semanas eu já tinha um jogo publicado no itch.io. A trilha é muito bem estruturada."</p>
+          <div class="depo-author">
+            <div class="depo-avatar">GM</div>
+            <div>
+              <strong>Gabriel M.</strong>
+              <span>Concluiu Plataformer Completo</span>
+            </div>
+          </div>
+        </div>
+        <div class="depo-card">
+          <div class="depo-stars">★★★★★</div>
+          <p>"O sistema de atividades obrigatórias fez toda a diferença. Eu realmente aprendi, não só assisti."</p>
+          <div class="depo-author">
+            <div class="depo-avatar">LC</div>
+            <div>
+              <strong>Larissa C.</strong>
+              <span>Concluiu Primeiros Passos</span>
+            </div>
+          </div>
+        </div>
+        <div class="depo-card">
+          <div class="depo-stars">★★★★★</div>
+          <p>"As aulas são curtas e diretas. Nada de papo desnecessário — só o que importa."</p>
+          <div class="depo-author">
+            <div class="depo-avatar">RT</div>
+            <div>
+              <strong>Rafael T.</strong>
+              <span>Em andamento: Multiplayer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="section-cta">
+    <div class="container">
+      <h2>Pronto para criar seu primeiro jogo?</h2>
+      <p>Crie sua conta agora e acesse a primeira trilha completamente de graça.</p>
+      <a href="pages/register.html" class="btn-primary btn-large">Criar conta grátis</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="logo-icon">◈</span>
+          Construct<strong>Academy</strong>
+          <p>A melhor plataforma para aprender Construct 3 em português.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <strong>Plataforma</strong>
+            <a href="#trilhas">Trilhas</a>
+            <a href="pages/login.html">Entrar</a>
+            <a href="pages/register.html">Criar conta</a>
+          </div>
+          <div class="footer-col">
+            <strong>Conta</strong>
+            <a href="pages/login.html">Login</a>
+            <a href="pages/register.html">Cadastro</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Construct Academy. Todos os direitos reservados.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

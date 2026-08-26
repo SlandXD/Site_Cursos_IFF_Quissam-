@@ -1,0 +1,80 @@
+[
+  {
+    "id": "0a82400a-354d-49ff-8e83-88a6aa0de699",
+    "name": "Administrador",
+    "email": "admin@constructacademy.com",
+    "password": "$2a$10$lxBFKaJhUsFuRrwt/YXNGeBie7EOFvTPERAyGD18RSsHoqAajVWGK",
+    "role": "admin",
+    "xp": 0,
+    "level": 1,
+    "streak": 1,
+    "createdAt": "2026-08-26T17:46:15.167Z",
+    "lastLogin": "2026-08-26T17:51:56.772Z"
+  },
+  {
+    "id": "21590c3a-e5ce-4066-9dd5-50bec460283f",
+    "name": "Aluno Teste",
+    "email": "teste@teste.com",
+    "password": "$2a$10$WOJzCj4pWpIZmOcf0Pk.iuA1eQ9fsrYMpQ5XRunLpWzQoAKqZIXn.",
+    "role": "student",
+    "xp": 0,
+    "level": 1,
+    "streak": 0,
+    "lastLogin": "2026-08-26T17:46:25.611Z",
+    "createdAt": "2026-08-26T17:46:25.611Z"
+  },
+  {
+    "id": "74f8b553-c63e-4714-b11a-0c41809c04f6",
+    "name": "Aluno Teste",
+    "email": "teste2@teste.com",
+    "password": "$2a$10$0ilwhU5.RVnxQdk1knZYzu/hbNqHltZN8VHuuu2yLH79v4RM5la1S",
+    "role": "student",
+    "xp": 10,
+    "level": 1,
+    "streak": 0,
+    "lastLogin": "2026-08-26T17:46:37.514Z",
+    "createdAt": "2026-08-26T17:46:37.514Z",
+    "badges": [
+      {
+        "id": "first_lesson",
+        "grantedAt": "2026-08-26T17:46:38.085Z"
+      }
+    ]
+  },
+  {
+    "id": "6f9549d1-befe-4f4a-9278-57d954e6423c",
+    "name": "Aluno Full",
+    "email": "full@teste.com",
+    "password": "$2a$10$Pavh0pl5cSB7H4Py9ClUgu7HFnlBypicgARKWNTwOBYYdIyDMY0ue",
+    "role": "student",
+    "xp": 10,
+    "level": 1,
+    "streak": 0,
+    "lastLogin": "2026-08-26T17:47:42.191Z",
+    "createdAt": "2026-08-26T17:47:42.191Z",
+    "badges": [
+      {
+        "id": "first_lesson",
+        "grantedAt": "2026-08-26T17:47:42.539Z"
+      }
+    ]
+  },
+  {
+    "id": "2d69e685-be8a-418f-9f4b-d8b3a74a1650",
+    "name": "Aluno V2",
+    "email": "v2@teste.com",
+    "password": "$2a$10$wcoB9pC.S8J5XkL/dAIM3Oowi/qbQC9OG6jDdbvQ5yzo9tCbPpVvO",
+    "role": "student",
+    "xp": 50,
+    "level": 1,
+    "streak": 0,
+    "lastLogin": "2026-08-26T17:47:58.040Z",
+    "createdAt": "2026-08-26T17:47:58.040Z",
+    "badges": [
+      {
+        "id": "first_lesson",
+        "grantedAt": "2026-08-26T17:47:58.227Z"
+      }
+    ]
+  }
+]
