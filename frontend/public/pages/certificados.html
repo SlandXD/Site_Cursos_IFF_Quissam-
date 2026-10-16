@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Seus certificados de conclusão de trilhas na Construct Academy.">
+  <meta property="og:title" content="Certificados — Construct Academy">
+  <meta property="og:description" content="Seus certificados de conclusão de trilhas na Construct Academy.">
+  <meta property="og:type" content="website">
+  <title>Certificados — Construct Academy</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/" class="sidebar-logo"><span class="logo-icon">◈</span>Construct<strong>Academy</strong></a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">Menu</div>
+      <a href="dashboard.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Início
+      </a>
+      <a href="cursos.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Trilhas
+      </a>
+      <a href="certificados.html" class="sidebar-link active">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6" stroke="currentColor" stroke-width="1.8"/><path d="M9 21l3-3 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Certificados
+      </a>
+      <a href="ranking.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+            stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+        Ranking
+      </a>
+      <div class="sidebar-section" style="margin-top:12px">Conta</div>
+      <a href="perfil.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Perfil
+      </a>
+      <a href="#" class="sidebar-link" id="logoutBtn">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sair
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div>
+          <div class="user-name" id="sidebarName">—</div>
+          <div class="user-level" id="sidebarLevel">—</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="top-bar">
+      <button onclick="document.getElementById('sidebar').classList.toggle('open')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px">
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+      </button>
+      <span class="top-bar-title">Certificados & Conquistas</span>
+      <div style="position:relative">
+        <button id="bellBtn" aria-label="Notificações"
+          style="background:none;border:none;cursor:pointer;font-size:1.1rem;
+                 padding:6px;display:flex;align-items:center;gap:4px;color:var(--text2)">
+          🔔
+          <span id="bellBadge"
+            style="display:none;position:absolute;top:0;right:0;
+                   background:var(--red);color:#fff;font-size:.6rem;
+                   font-weight:700;width:16px;height:16px;border-radius:50%;
+                   align-items:center;justify-content:center">0</span>
+        </button>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" style="margin-left:auto">☀️ Claro</button>
+    </header>
+
+    <div class="page-content">
+      <div style="margin-bottom:32px">
+        <h1 style="font-size:1.5rem;font-weight:800;margin-bottom:6px">Suas conquistas</h1>
+        <p style="color:var(--text2);font-size:.9rem">Certificados emitidos ao concluir cada trilha e badges de progresso.</p>
+      </div>
+
+      <!-- Certificados -->
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:16px">Certificados emitidos</h2>
+      <div id="certsList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:40px"></div>
+
+      <!-- Badges -->
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:16px">Badges</h2>
+      <div class="badges-grid" id="badgesGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Certificado -->
+<div class="modal-overlay" id="certModal">
+  <div class="modal" style="max-width:800px">
+    <div class="modal-header">
+      <h3>Certificado de Conclusão</h3>
+      <button class="modal-close" onclick="document.getElementById('certModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="cert-card" id="certCardContent"></div>
+    <div class="modal-actions">
+      <button class="btn-sm secondary" onclick="document.getElementById('certModal').classList.remove('open')">Fechar</button>
+      <button class="btn-sm" onclick="printCert()">🖨 Imprimir / Salvar PDF</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>
+  requireAuth();
+
+  document.getElementById('logoutBtn').addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('ca_token');
+    localStorage.removeItem('ca_user');
+    window.location.href = '/pages/login.html';
+  });
+
+  async function load() {
+    try {
+      const data = await API.get('/student/achievements');
+
+      document.getElementById('sidebarAvatar').textContent = data.user.avatar || data.user.name.charAt(0).toUpperCase();
+      document.getElementById('sidebarName').textContent   = data.user.name;
+      document.getElementById('sidebarLevel').textContent  = `Nível ${data.user.level}`;
+
+      // Certificados
+      const certsList = document.getElementById('certsList');
+      if (data.certificates.length === 0) {
+        certsList.innerHTML = `<p style="color:var(--text3);font-size:.88rem">Nenhum certificado ainda. Conclua uma trilha para receber seu primeiro!</p>`;
+      } else {
+        certsList.innerHTML = data.certificates.map(c => `
+          <div style="background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:24px;position:relative;overflow:hidden;cursor:pointer"
+               onclick="showCert(${JSON.stringify(c).replace(/"/g, '&quot;')})">
+            <div style="font-size:2rem;margin-bottom:12px">🏆</div>
+            <div style="font-size:.75rem;color:var(--accent2);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Certificado</div>
+            <h3 style="font-size:1rem;font-weight:700;margin-bottom:4px">${c.courseName}</h3>
+            <p style="font-size:.8rem;color:var(--text3)">Emitido em ${new Date(c.issuedAt).toLocaleDateString('pt-BR')}</p>
+          </div>
+        `).join('');
+      }
+
+      // Badges
+      const allBadges = [
+        { id: 'first_lesson', emoji: '🎬', name: 'Primeira Aula',    desc: 'Assistiu sua primeira aula' },
+        { id: 'first_course', emoji: '🏁', name: 'Primeira Trilha',  desc: 'Concluiu uma trilha completa' },
+        { id: 'streak_7',     emoji: '🔥', name: '7 dias seguidos',  desc: 'Estudou 7 dias sem parar' },
+        { id: 'quiz_master',  emoji: '🧠', name: 'Quiz Master',      desc: '10 atividades com 100%' },
+        { id: 'speed_run',    emoji: '⚡', name: 'Speed Run',        desc: 'Concluiu uma trilha em menos de 3 dias' },
+        { id: 'note_taker',   emoji: '📝', name: 'Anotador',         desc: 'Salvou notas em 5 aulas' },
+      ];
+      const earned = new Set(data.badges.map(b => b.id));
+      document.getElementById('badgesGrid').innerHTML = allBadges.map(b => `
+        <div class="badge-item ${earned.has(b.id) ? '' : 'locked'}">
+          <span class="badge-emoji">${b.emoji}</span>
+          <div class="badge-info">
+            <strong>${b.name}</strong>
+            <span>${b.desc}</span>
+          </div>
+        </div>
+      `).join('');
+
+    } catch (err) {
+      showToast('Erro ao carregar conquistas', 'error');
+    }
+  }
+
+  function showCert(cert) {
+    const d = new Date(cert.issuedAt);
+    document.getElementById('certCardContent').innerHTML = `
+      <h1>Certificado de Conclusão</h1>
+      <p>Este certificado atesta que</p>
+      <div class="cert-name">${cert.userName}</div>
+      <p>concluiu com êxito o curso</p>
+      <div class="cert-course">${cert.courseName}</div>
+      <p style="margin-top:8px">na plataforma Construct Academy</p>
+      <div class="cert-date" style="margin-top:24px">${d.toLocaleDateString('pt-BR', { year:'numeric', month:'long', day:'numeric' })}</div>
+      <div style="margin-top:32px;display:flex;justify-content:center;gap:60px;font-size:.8rem;color:var(--text3)">
+        <div>◈ Construct Academy</div>
+        <div>ID: ${cert.id}</div>
+      </div>
+    `;
+    document.getElementById('certModal').classList.add('open');
+  }
+
+  function printCert() {
+    const content = document.getElementById('certCardContent').innerHTML;
+    const w = window.open('', '_blank');
+    w.document.write(`
+      <html><head><title>Certificado</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+      <style>
+        body { font-family: 'Inter', sans-serif; background: #0a0a0f; color: #f0f0f8; display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; }
+        .cert-card { background: linear-gradient(135deg, #1a1a28 0%, #1a1530 100%); border: 2px solid #7c5cfc; border-radius: 24px; padding: 60px; text-align: center; max-width: 760px; }
+        h1 { font-size: 2rem; margin-bottom: 8px; font-weight: 800; }
+        p  { color: #9898b8; margin-bottom: 4px; }
+        .cert-name { font-size: 1.6rem; font-weight: 700; color: #a07aff; margin: 20px 0; }
+        .cert-course { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+        .cert-date { font-size: .85rem; color: #5a5a78; }
+      </style></head>
+      <body><div class="cert-card">${content}</div></body></html>
+    `);
+    w.document.close();
+    w.print();
+  }
+
+  load();
+
+  window.initBell && window.initBell();
+
+  // Sidebar overlay for mobile
+  (function() {
+    const overlay = document.createElement('div');
+    overlay.id = 'sidebarOverlay';
+    overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;';
+    document.body.appendChild(overlay);
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    const toggle  = () => {
+      const open = sidebar.classList.toggle('open');
+      overlay.style.display = open ? 'block' : 'none';
+    };
+    document.querySelectorAll('[onclick*="sidebar"]').forEach(btn => {
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', toggle);
+    });
+    document.getElementById('sidebarToggle')?.addEventListener('click', toggle);
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.style.display = 'none';
+    });
+  })();
+</script>
+</body>
+</html>

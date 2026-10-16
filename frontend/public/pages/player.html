@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Assista às aulas e avance nas trilhas da Construct Academy.">
+  <meta property="og:title" content="Player — Construct Academy">
+  <meta property="og:description" content="Assista às aulas e avance nas trilhas da Construct Academy.">
+  <meta property="og:type" content="website">
+  <title>Player — Construct Academy</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/" class="sidebar-logo"><span class="logo-icon">◈</span>Construct<strong>Academy</strong></a>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Início
+      </a>
+      <a href="cursos.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Trilhas
+      </a>
+      <a href="certificados.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6" stroke="currentColor" stroke-width="1.8"/><path d="M9 21l3-3 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Certificados
+      </a>
+      <a href="ranking.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+            stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+        Ranking
+      </a>
+      <div class="sidebar-section" style="margin-top:12px">Conta</div>
+      <a href="perfil.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Perfil
+      </a>
+      <a href="#" class="sidebar-link" id="logoutBtn">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sair
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div>
+          <div class="user-name" id="sidebarName">—</div>
+          <div class="user-level" id="sidebarLevel">—</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="top-bar">
+      <button onclick="document.getElementById('sidebar').classList.toggle('open')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px">
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+      </button>
+      <span class="top-bar-title" id="topBarTitle">Carregando...</span>
+      <div class="xp-bar">
+        <span id="topXP">0 XP</span>
+        <div class="xp-progress-track">
+          <div class="xp-progress-fill" id="topXPFill" style="width:0%"></div>
+        </div>
+        <span id="topLevel">Nv 1</span>
+      </div>
+      <div style="position:relative">
+        <button id="bellBtn" aria-label="Notificações"
+          style="background:none;border:none;cursor:pointer;font-size:1.1rem;
+                 padding:6px;display:flex;align-items:center;gap:4px;color:var(--text2)">
+          🔔
+          <span id="bellBadge"
+            style="display:none;position:absolute;top:0;right:0;
+                   background:var(--red);color:#fff;font-size:.6rem;
+                   font-weight:700;width:16px;height:16px;border-radius:50%;
+                   align-items:center;justify-content:center">0</span>
+        </button>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" style="margin-left:8px">☀️ Claro</button>
+    </header>
+
+    <div class="video-page">
+      <div class="video-layout" id="videoLayout">
+
+        <!-- Player principal -->
+        <div class="video-main">
+          <!-- Breadcrumb -->
+          <div style="margin-bottom:16px;font-size:.82rem;color:var(--text3)">
+            <a href="cursos.html" style="color:var(--text3)">Trilhas</a>
+            <span style="margin:0 6px">›</span>
+            <span id="breadCourse">—</span>
+            <span style="margin:0 6px">›</span>
+            <span id="breadLesson">—</span>
+          </div>
+
+          <!-- Vídeo -->
+          <div class="video-player-wrap" id="playerWrap">
+            <div class="video-overlay-locked" id="lockedOverlay" style="display:none">
+              <div style="font-size:3rem">🔒</div>
+              <h3>Conteúdo bloqueado</h3>
+              <p id="lockedMsg">Complete a etapa anterior para liberar esta aula.</p>
+            </div>
+            <div id="videoContainer"></div>
+          </div>
+
+          <!-- Barra de progresso de assistido -->
+          <div style="margin-top:12px">
+            <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text3);margin-bottom:4px">
+              <span>Progresso de visualização</span>
+              <span id="watchedPct">0%</span>
+              <span id="timeRemaining" style="margin-left:12px;font-size:.75rem;color:var(--text3)"></span>
+            </div>
+            <div class="video-progress-bar">
+              <div class="video-progress-fill" id="watchedFill" style="width:0%"></div>
+            </div>
+          </div>
+
+          <!-- Info da aula -->
+          <div class="video-title-area">
+            <h2 id="lessonTitle">—</h2>
+            <p id="lessonDesc" style="color:var(--text2)"></p>
+          </div>
+
+          <!-- Notas pessoais -->
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:16px">
+            <h4 style="font-size:.9rem;font-weight:700;margin-bottom:10px">📝 Minhas notas</h4>
+            <textarea id="notesArea" placeholder="Anote o que aprendeu nesta aula..."
+              style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;
+                     color:var(--text);padding:10px 12px;font-size:.85rem;font-family:inherit;
+                     resize:vertical;min-height:80px;outline:none;line-height:1.6"></textarea>
+            <button id="saveNotes" class="btn-sm" style="margin-top:8px">Salvar notas</button>
+          </div>
+
+          <!-- Atividade pós-vídeo -->
+          <div id="activitySection" style="display:none;margin-top:24px">
+            <div class="quiz-card" id="quizCard"></div>
+          </div>
+
+          <!-- Botão próxima aula -->
+          <div id="nextLessonBar" style="display:none;margin-top:20px;padding:20px;background:var(--surface);border:1px solid var(--green);border-radius:12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <div style="flex:1">
+              <div style="font-size:.78rem;color:var(--green);font-weight:600;margin-bottom:4px">✓ Aula concluída!</div>
+              <div style="font-size:.9rem;font-weight:600" id="nextLessonName">—</div>
+            </div>
+            <button class="btn-primary" id="nextLessonBtn">Próxima aula →</button>
+          </div>
+        </div>
+
+        <!-- Sidebar de aulas -->
+        <aside class="lessons-sidebar">
+          <div class="lessons-sidebar-header">
+            📚 Aulas do módulo
+          </div>
+          <div id="lessonsList"></div>
+        </aside>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>
+  requireAuth();
+
+  document.getElementById('logoutBtn').addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('ca_token');
+    localStorage.removeItem('ca_user');
+    window.location.href = '/pages/login.html';
+  });
+
+  const params   = new URLSearchParams(window.location.search);
+  const courseId = params.get('course');
+  const lessonId = params.get('lesson');
+
+  if (!courseId || !lessonId) window.location.href = 'cursos.html';
+
+  let lessonData      = null;
+  let watchTimer      = null;   // interval used only while video is playing
+  let watchedSecs     = 0;      // seconds actually watched (deduplicated)
+  let maxReachedSecs  = 0;      // ponto máximo já assistido (bloqueia avanço além daqui)
+  let totalSecs       = 1;
+  let alreadyDone     = false;
+  let ytPlayer        = null;   // YouTube IFrame API player instance
+  let seekBlocked     = false;  // flag para evitar loop ao forçar seek de volta
+
+  // YouTube IFrame API callback — called by the API script when ready
+  window.onYouTubeIframeAPIReady = function () {};
+
+  async function loadPlayer() {
+    try {
+      const data = await API.get(`/courses/${courseId}/lessons/${lessonId}`);
+      lessonData = data;
+
+      // Sidebar
+      document.getElementById('sidebarAvatar').textContent = data.userAvatar || data.userName.charAt(0).toUpperCase();
+      document.getElementById('sidebarName').textContent   = data.userName;
+      document.getElementById('sidebarLevel').textContent  = `Nível ${data.userLevel}`;
+
+      // Top bar XP
+      const xpForNext = data.userLevel * 100;
+      const pct = Math.min((data.userXP % xpForNext) / xpForNext * 100, 100);
+      document.getElementById('topXP').textContent     = `${data.userXP} XP`;
+      document.getElementById('topXPFill').style.width = pct + '%';
+      document.getElementById('topLevel').textContent  = `Nv ${data.userLevel}`;
+
+      // Breadcrumb e título
+      document.getElementById('breadCourse').textContent  = data.courseName;
+      document.getElementById('breadLesson').textContent  = data.lesson.title;
+      document.getElementById('topBarTitle').textContent  = data.lesson.title;
+      document.getElementById('lessonTitle').textContent  = data.lesson.title;
+      document.getElementById('lessonDesc').textContent   = data.lesson.description || '';
+
+      // Notas salvas
+      const notesKey = `notes_${courseId}_${lessonId}`;
+      document.getElementById('notesArea').value = localStorage.getItem(notesKey) || '';
+      document.getElementById('saveNotes').addEventListener('click', () => {
+        localStorage.setItem(notesKey, document.getElementById('notesArea').value);
+        showToast('Notas salvas!', 'success');
+      });
+
+      // Lista de aulas
+      renderLessonsList(data.allLessons);
+
+      // Player
+      if (data.lesson.locked) {
+        document.getElementById('lockedOverlay').style.display = 'flex';
+        document.getElementById('lockedMsg').textContent = 'Complete a etapa anterior para liberar esta aula.';
+      } else {
+        renderVideo(data.lesson);
+      }
+
+      alreadyDone = data.lesson.completed;
+      updateWatchUI();
+      if (alreadyDone && data.lesson.type === 'video') {
+        document.getElementById('watchedFill').style.width  = '100%';
+        document.getElementById('watchedPct').textContent   = '100%';
+        checkShowActivity(data);
+      }
+
+    } catch (err) {
+      const msg = err.message || 'Erro ao carregar aula';
+      document.getElementById('topBarTitle').textContent = 'Erro';
+      document.getElementById('videoContainer').innerHTML = `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+                    height:100%;min-height:300px;gap:16px;color:var(--text2);text-align:center;padding:32px">
+          <div style="font-size:3rem">⚠️</div>
+          <h3 style="color:var(--text)">${msg}</h3>
+          ${msg.includes('matriculado') ? `
+            <p>Você precisa se matricular nesta trilha antes de assistir as aulas.</p>
+            <a href="cursos.html" class="btn-primary" style="margin-top:8px">Ver trilhas →</a>
+          ` : `
+            <p>Tente fazer login novamente.</p>
+            <a href="login.html" class="btn-primary" style="margin-top:8px">Fazer login</a>
+          `}
+        </div>
+      `;
+    }
+  }
+
+  function renderLessonsList(lessons) {
+    const container = document.getElementById('lessonsList');
+    container.innerHTML = lessons.map((l, i) => {
+      let numClass = 'lock', numContent = i + 1;
+      if (l.status === 'completed') { numClass = 'done'; numContent = '✓'; }
+      if (l.status === 'current')   { numClass = 'curr'; }
+      const isActive = l.id === lessonId;
+      return `
+        <div class="lesson-item ${isActive ? 'active' : ''} ${l.status === 'locked' ? 'locked' : ''}"
+             ${l.status !== 'locked' ? `onclick="window.location.href='player.html?course=${courseId}&lesson=${l.id}'"` : ''}>
+          <div class="lesson-num ${numClass}">${numContent}</div>
+          <div class="lesson-info">
+            <strong>${l.title}</strong>
+            <em>${l.type === 'video' ? '🎬' : '📝'} ${l.duration || '—'}</em>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderVideo(lesson) {
+    const container = document.getElementById('videoContainer');
+
+    if (lesson.videoType === 'youtube') {
+      const videoId = extractYouTubeId(lesson.videoUrl);
+
+      // Inject YouTube IFrame API script once
+      if (!document.getElementById('yt-api-script')) {
+        const tag = document.createElement('script');
+        tag.id  = 'yt-api-script';
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+      }
+
+      // Placeholder div replaced by the API with the actual iframe
+      container.innerHTML = '<div id="ytPlayerEl"></div>';
+
+      const mins = parseDuration(lesson.duration);
+      totalSecs  = mins * 60 || 300;
+
+      const savedSecs = parseInt(localStorage.getItem(`watch_${courseId}_${lessonId}`) || '0');
+      watchedSecs    = Math.min(savedSecs, totalSecs);
+      maxReachedSecs = watchedSecs; // restaura o ponto máximo já assistido
+      updateWatchUI();
+
+      let lastPosition = 0;
+
+      function initYTPlayer() {
+        ytPlayer = new YT.Player('ytPlayerEl', {
+          videoId,
+          playerVars: { rel: 0, modestbranding: 1 },
+          events: {
+            onReady(e) {
+              const apiDur = e.target.getDuration();
+              if (apiDur > 0) totalSecs = apiDur;
+              // Retoma do ponto máximo assistido (não do início)
+              if (maxReachedSecs > 0 && maxReachedSecs < totalSecs) {
+                e.target.seekTo(maxReachedSecs, true);
+              }
+              lastPosition = e.target.getCurrentTime();
+              updateWatchUI();
+            },
+            onStateChange(e) {
+              if (e.data === YT.PlayerState.PLAYING) {
+                // Count time only while actually playing
+                watchTimer = setInterval(() => {
+                  const current = ytPlayer.getCurrentTime();
+                  const delta = current - lastPosition;
+
+                  // ── Bloqueio de avanço ─────────────────────────────────
+                  // Se tentou pular mais de 2s além do ponto máximo assistido, volta
+                  if (!alreadyDone && current > maxReachedSecs + 2) {
+                    seekBlocked = true;
+                    ytPlayer.seekTo(maxReachedSecs, true);
+                    showToast('Assista o vídeo sem pular para avançar ⏪', 'info');
+                    lastPosition = maxReachedSecs;
+                    return;
+                  }
+
+                  // Only count normal forward playback (ignore seeks/buffering)
+                  if (delta > 0 && delta < 3) {
+                    watchedSecs    = Math.min(watchedSecs + delta, totalSecs);
+                    maxReachedSecs = Math.max(maxReachedSecs, watchedSecs);
+                    localStorage.setItem(`watch_${courseId}_${lessonId}`, Math.round(maxReachedSecs));
+                    updateWatchUI();
+                    if (watchedSecs >= totalSecs * 0.8 && !alreadyDone) {
+                      markLessonComplete();
+                    }
+                  }
+                  lastPosition = current;
+                }, 1000);
+              } else {
+                clearInterval(watchTimer);
+                watchTimer = null;
+                if (e.data === YT.PlayerState.ENDED && !alreadyDone) {
+                  watchedSecs    = totalSecs;
+                  maxReachedSecs = totalSecs;
+                  updateWatchUI();
+                  markLessonComplete();
+                }
+              }
+            },
+          },
+        });
+      }
+
+      function waitForYT() {
+        if (typeof YT !== 'undefined' && YT.Player) {
+          initYTPlayer();
+        } else {
+          window.onYouTubeIframeAPIReady = function () {
+            initYTPlayer();
+          };
+        }
+      }
+      waitForYT();
+
+    } else if (lesson.videoType === 'url') {
+      container.innerHTML = `
+        <video id="htmlVideo" controls style="width:100%;height:100%;background:#000">
+          <source src="${lesson.videoUrl}" />
+          Seu navegador não suporta HTML5 Video.
+        </video>
+      `;
+      startHTMLVideoTracking(lesson.requiredPercent || 80);
+    }
+  }
+
+  function extractYouTubeId(url) {
+    const m = url.match(/(?:v=|youtu\.be\/)([^&\s]+)/);
+    return m ? m[1] : url;
+  }
+
+  function startHTMLVideoTracking(requiredPct) {
+    const vid = document.getElementById('htmlVideo');
+    if (!vid) return;
+
+    // Restaura ponto máximo assistido
+    const savedSecs = parseInt(localStorage.getItem(`watch_${courseId}_${lessonId}`) || '0');
+    maxReachedSecs = savedSecs;
+    if (maxReachedSecs > 0) vid.currentTime = maxReachedSecs;
+
+    vid.addEventListener('timeupdate', () => {
+      if (!vid.duration) return;
+
+      // Bloqueio de avanço — impede pular além do máximo assistido
+      if (!alreadyDone && vid.currentTime > maxReachedSecs + 2) {
+        vid.currentTime = maxReachedSecs;
+        showToast('Assista o vídeo sem pular para avançar ⏪', 'info');
+        return;
+      }
+
+      // Atualiza ponto máximo
+      maxReachedSecs = Math.max(maxReachedSecs, vid.currentTime);
+      localStorage.setItem(`watch_${courseId}_${lessonId}`, Math.round(maxReachedSecs));
+
+      const pct = (maxReachedSecs / vid.duration) * 100;
+      document.getElementById('watchedFill').style.width = pct + '%';
+      document.getElementById('watchedPct').textContent  = Math.round(pct) + '%';
+      if (pct >= requiredPct && !alreadyDone) {
+        markLessonComplete();
+      }
+    });
+  }
+
+  function parseDuration(str) {
+    if (!str) return 5;
+    const m = str.match(/(\d+)h.*?(\d+)?m?/);
+    if (m) return (parseInt(m[1]) * 60) + (parseInt(m[2]) || 0);
+    const m2 = str.match(/(\d+)m/);
+    return m2 ? parseInt(m2[1]) : 5;
+  }
+
+  function updateWatchUI() {
+    const pct = Math.min((watchedSecs / totalSecs) * 100, 100);
+    document.getElementById('watchedFill').style.width = pct + '%';
+    document.getElementById('watchedPct').textContent  = Math.round(pct) + '%';
+    const trEl = document.getElementById('timeRemaining');
+    if (trEl) {
+      if (alreadyDone) {
+        trEl.textContent = '✓ Assistido';
+        trEl.style.color = 'var(--green)';
+      } else {
+        const remainSecs = Math.max(0, totalSecs - watchedSecs);
+        const mins = Math.ceil(remainSecs / 60);
+        trEl.textContent = `Faltam ${mins} min`;
+        trEl.style.color = 'var(--text3)';
+      }
+    }
+  }
+
+  async function markLessonComplete() {
+    if (alreadyDone) return;
+    alreadyDone = true;
+    clearInterval(watchTimer);
+
+    try {
+      const res = await API.post(`/courses/${courseId}/lessons/${lessonId}/complete`);
+      showXPGain(res.xpGained || 10);
+
+      // Atualiza XP no topo
+      const xpForNext = res.userLevel * 100;
+      const pct = Math.min((res.userXP % xpForNext) / xpForNext * 100, 100);
+      document.getElementById('topXP').textContent     = `${res.userXP} XP`;
+      document.getElementById('topXPFill').style.width = pct + '%';
+      document.getElementById('topLevel').textContent  = `Nv ${res.userLevel}`;
+
+      // Atualiza lista de aulas
+      if (lessonData) renderLessonsList(res.allLessons || lessonData.allLessons);
+
+      // Mostra atividade ou botão de próxima aula
+      checkShowActivity(res);
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  function checkShowActivity(data) {
+    if (data.hasActivity && !data.activityCompleted) {
+      showActivity(data.activity);
+    } else if (data.nextLesson) {
+      showNextLessonBar(data.nextLesson);
+    } else if (data.courseCompleted) {
+      showCourseCompleteBanner();
+    }
+  }
+
+  function showActivity(activity) {
+    const section = document.getElementById('activitySection');
+    section.style.display = 'block';
+
+    const card = document.getElementById('quizCard');
+    let currentQ = 0;
+    let correctAnswers = 0;
+
+    function renderQuestion(index) {
+      const q = activity.questions[index];
+      card.innerHTML = `
+        <div class="quiz-header">
+          <div class="section-label">Atividade — Questão ${index + 1} de ${activity.questions.length}</div>
+          <h2>${activity.title}</h2>
+        </div>
+        <p class="quiz-question">${q.question}</p>
+        <div class="quiz-options">
+          ${q.options.map((opt, i) => `
+            <div class="quiz-option" data-index="${i}">${opt}</div>
+          `).join('')}
+        </div>
+        <div class="quiz-feedback" id="qFeedback"></div>
+        <button class="btn-primary" id="confirmAnswer" disabled>Confirmar resposta</button>
+      `;
+
+      let selected = null;
+      card.querySelectorAll('.quiz-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          card.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          selected = parseInt(opt.dataset.index);
+          document.getElementById('confirmAnswer').disabled = false;
+        });
+      });
+
+      document.getElementById('confirmAnswer').addEventListener('click', () => {
+        if (selected === null) return;
+        const fb = document.getElementById('qFeedback');
+        const isCorrect = selected === q.correctIndex;
+        if (isCorrect) correctAnswers++;
+
+        card.querySelectorAll('.quiz-option').forEach((opt, i) => {
+          opt.style.pointerEvents = 'none';
+          if (i === q.correctIndex) opt.classList.add('correct');
+          if (i === selected && !isCorrect) opt.classList.add('wrong');
+        });
+
+        fb.textContent = isCorrect ? `✓ Correto! ${q.explanation || ''}` : `✗ Incorreto. ${q.explanation || ''}`;
+        fb.className   = `quiz-feedback show ${isCorrect ? 'ok' : 'fail'}`;
+
+        document.getElementById('confirmAnswer').textContent = index < activity.questions.length - 1
+          ? 'Próxima questão →' : 'Concluir atividade';
+
+        document.getElementById('confirmAnswer').onclick = async () => {
+          if (index < activity.questions.length - 1) {
+            renderQuestion(index + 1);
+          } else {
+            await finishActivity(correctAnswers, activity.questions.length);
+          }
+        };
+      });
+    }
+
+    renderQuestion(0);
+  }
+
+  async function finishActivity(correct, total) {
+    const score = Math.round((correct / total) * 100);
+    try {
+      const res = await API.post(`/courses/${courseId}/lessons/${lessonId}/activity`, { score });
+      showXPGain(res.xpGained || 15);
+
+      document.getElementById('quizCard').innerHTML = `
+        <div style="text-align:center;padding:20px">
+          <div style="font-size:3rem;margin-bottom:16px">${score >= 70 ? '🎉' : '📚'}</div>
+          <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:8px">
+            ${score >= 70 ? 'Atividade concluída!' : 'Quase lá!'}
+          </h2>
+          <p style="color:var(--text2);margin-bottom:4px">${correct}/${total} respostas corretas</p>
+          <p style="font-size:1.4rem;font-weight:800;color:var(--accent2)">${score}%</p>
+          ${score < 70 ? `<button class="btn-primary" style="margin-top:16px" onclick="location.reload()">Tentar novamente</button>` : ''}
+        </div>
+      `;
+
+      if (score >= 70 && res.nextLesson) {
+        showNextLessonBar(res.nextLesson);
+      } else if (score >= 70 && res.courseCompleted) {
+        showCourseCompleteBanner();
+      }
+    } catch (err) {
+      showToast('Erro ao registrar atividade', 'error');
+    }
+  }
+
+  function showNextLessonBar(nextLesson) {
+    const bar = document.getElementById('nextLessonBar');
+    bar.style.display = 'flex';
+    document.getElementById('nextLessonName').textContent = nextLesson.title;
+    document.getElementById('nextLessonBtn').addEventListener('click', () => {
+      window.location.href = `player.html?course=${courseId}&lesson=${nextLesson.id}`;
+    });
+  }
+
+  function showCourseCompleteBanner() {
+    const bar = document.getElementById('nextLessonBar');
+    bar.style.display = 'flex';
+    bar.style.borderColor = 'var(--accent)';
+    bar.innerHTML = `
+      <div style="flex:1">
+        <div style="font-size:.78rem;color:var(--accent2);font-weight:600;margin-bottom:4px">🏆 Trilha concluída!</div>
+        <div style="font-size:.9rem;font-weight:600">Parabéns! Você finalizou este curso.</div>
+      </div>
+      <a href="certificados.html" class="btn-primary">Ver certificado 🎓</a>
+    `;
+  }
+
+  loadPlayer();
+
+  window.initBell && window.initBell();
+
+  // Sidebar overlay for mobile
+  (function() {
+    const overlay = document.createElement('div');
+    overlay.id = 'sidebarOverlay';
+    overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;';
+    document.body.appendChild(overlay);
+    const sidebar = document.getElementById('sidebar');
+    const toggle  = () => {
+      const open = sidebar.classList.toggle('open');
+      overlay.style.display = open ? 'block' : 'none';
+    };
+    document.querySelectorAll('[onclick*="sidebar"]').forEach(btn => {
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', toggle);
+    });
+    document.getElementById('sidebarToggle')?.addEventListener('click', toggle);
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.style.display = 'none';
+    });
+  })();
+</script>
+</body>
+</html>

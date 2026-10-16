@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Gerencie seu perfil, badges e progresso na Construct Academy.">
+  <meta property="og:title" content="Perfil — Construct Academy">
+  <meta property="og:description" content="Gerencie seu perfil, badges e progresso na Construct Academy.">
+  <meta property="og:type" content="website">
+  <title>Perfil — Construct Academy</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/" class="sidebar-logo"><span class="logo-icon">◈</span>Construct<strong>Academy</strong></a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">Menu</div>
+      <a href="dashboard.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Início
+      </a>
+      <a href="cursos.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Trilhas
+      </a>
+      <a href="certificados.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6" stroke="currentColor" stroke-width="1.8"/><path d="M9 21l3-3 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Certificados
+      </a>
+      <a href="ranking.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+            stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+        Ranking
+      </a>
+      <div class="sidebar-section" style="margin-top:12px">Conta</div>
+      <a href="perfil.html" class="sidebar-link active">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Perfil
+      </a>
+      <a href="#" class="sidebar-link" id="logoutBtn">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sair
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div>
+          <div class="user-name" id="sidebarName">—</div>
+          <div class="user-level" id="sidebarLevel">—</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="top-bar">
+      <button onclick="document.getElementById('sidebar').classList.toggle('open')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px">
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+      </button>
+      <span class="top-bar-title">Meu Perfil</span>
+      <div style="position:relative">
+        <button id="bellBtn" aria-label="Notificações"
+          style="background:none;border:none;cursor:pointer;font-size:1.1rem;
+                 padding:6px;display:flex;align-items:center;gap:4px;color:var(--text2)">
+          🔔
+          <span id="bellBadge"
+            style="display:none;position:absolute;top:0;right:0;
+                   background:var(--red);color:#fff;font-size:.6rem;
+                   font-weight:700;width:16px;height:16px;border-radius:50%;
+                   align-items:center;justify-content:center">0</span>
+        </button>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" style="margin-left:auto">☀️ Claro</button>
+    </header>
+
+    <div class="page-content" style="max-width:640px">
+      <h1 style="font-size:1.5rem;font-weight:800;margin-bottom:28px">Meu Perfil</h1>
+
+      <div class="form-error" id="formError"></div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:20px">
+        <h2 style="font-size:.95rem;font-weight:700;margin-bottom:20px">Informações pessoais</h2>
+        <form id="profileForm">
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" id="nameInput" placeholder="Seu nome" required />
+          </div>
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" id="emailInput" placeholder="seu@email.com" required />
+          </div>
+          <div class="form-group">
+            <label>Avatar (emoji)</label>
+            <div id="avatarGrid" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px"></div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <input type="text" id="avatarInput" maxlength="10" placeholder="Ou escreva um emoji"
+                style="width:120px;padding:8px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:1.2rem;outline:none" />
+              <span style="font-size:.8rem;color:var(--text3)">Selecionado: <span id="avatarPreview">—</span></span>
+            </div>
+          </div>
+          <button type="submit" class="btn-sm">Salvar alterações</button>
+        </form>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px">
+        <h2 style="font-size:.95rem;font-weight:700;margin-bottom:20px">Alterar senha</h2>
+        <form id="passwordForm">
+          <div class="form-group">
+            <label>Senha atual</label>
+            <input type="password" id="currentPass" placeholder="••••••••" />
+          </div>
+          <div class="form-group">
+            <label>Nova senha</label>
+            <input type="password" id="newPass" placeholder="Mínimo 6 caracteres" minlength="6" />
+          </div>
+          <button type="submit" class="btn-sm">Atualizar senha</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>
+  requireAuth();
+
+  document.getElementById('logoutBtn').addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('ca_token');
+    localStorage.removeItem('ca_user');
+    window.location.href = '/pages/login.html';
+  });
+
+  const AVATAR_OPTIONS = ['🎮','⚔️','🚀','💻','🎯','🏆','🎲','🔥','⭐','🦊','🐉','🤖','👾','🌟','💡','🎵'];
+
+  function renderAvatarGrid(currentAvatar) {
+    const grid = document.getElementById('avatarGrid');
+    if (!grid) return;
+    grid.innerHTML = AVATAR_OPTIONS.map(e => `
+      <button type="button" onclick="selectAvatar('${e}')"
+        style="font-size:1.4rem;width:40px;height:40px;border-radius:8px;border:2px solid ${e === currentAvatar ? 'var(--accent)' : 'var(--border2)'};background:var(--bg3);cursor:pointer;transition:border-color .15s"
+        title="${e}">${e}</button>
+    `).join('');
+  }
+
+  window.selectAvatar = function(emoji) {
+    document.getElementById('avatarInput').value = emoji;
+    document.getElementById('avatarPreview').textContent = emoji;
+    renderAvatarGrid(emoji);
+  };
+
+  async function load() {
+    try {
+      const data = await API.get('/student/profile');
+      document.getElementById('sidebarAvatar').textContent = data.avatar || data.name.charAt(0).toUpperCase();
+      document.getElementById('sidebarName').textContent   = data.name;
+      document.getElementById('sidebarLevel').textContent  = `Nível ${data.level}`;
+      document.getElementById('nameInput').value  = data.name;
+      document.getElementById('emailInput').value = data.email;
+      document.getElementById('avatarInput').value = data.avatar || '';
+      document.getElementById('avatarPreview').textContent = data.avatar || '—';
+      renderAvatarGrid(data.avatar || '');
+    } catch {}
+  }
+
+  document.getElementById('profileForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    try {
+      await API.put('/student/profile', {
+        name:   document.getElementById('nameInput').value,
+        email:  document.getElementById('emailInput').value,
+        avatar: document.getElementById('avatarInput').value,
+      });
+      showToast('Perfil atualizado!', 'success');
+      load();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  });
+
+  document.getElementById('passwordForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const np = document.getElementById('newPass').value;
+    if (np.length < 6) { showToast('A senha deve ter ao menos 6 caracteres', 'error'); return; }
+    try {
+      await API.put('/student/password', {
+        currentPassword: document.getElementById('currentPass').value,
+        newPassword: np,
+      });
+      showToast('Senha atualizada!', 'success');
+      document.getElementById('passwordForm').reset();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  });
+
+  load();
+
+  window.initBell && window.initBell();
+
+  // Sidebar overlay for mobile
+  (function() {
+    const overlay = document.createElement('div');
+    overlay.id = 'sidebarOverlay';
+    overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;';
+    document.body.appendChild(overlay);
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    const toggle  = () => {
+      const open = sidebar.classList.toggle('open');
+      overlay.style.display = open ? 'block' : 'none';
+    };
+    document.querySelectorAll('[onclick*="sidebar"]').forEach(btn => {
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', toggle);
+    });
+    document.getElementById('sidebarToggle')?.addEventListener('click', toggle);
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.style.display = 'none';
+    });
+  })();
+</script>
+</body>
+</html>

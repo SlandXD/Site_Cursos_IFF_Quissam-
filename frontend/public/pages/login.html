@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Acesse sua conta na Construct Academy">
+  <meta property="og:title" content="Login — Construct Academy">
+  <meta property="og:description" content="Acesse sua conta na Construct Academy.">
+  <meta property="og:type" content="website">
+  <title>Entrar — Construct Academy</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="auth-page">
+
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <div class="auth-card">
+    <a href="/" class="auth-logo">
+      <span class="logo-icon">◈</span>
+      Construct<strong>Academy</strong>
+    </a>
+
+    <h1>Bem-vindo de volta</h1>
+    <p class="subtitle">Entre na sua conta para continuar aprendendo.</p>
+
+    <div class="form-error" id="formError"></div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="seu@email.com" required autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" />
+      </div>
+      <button type="submit" class="btn-form" id="btnLogin">Entrar</button>
+    </form>
+
+    <p class="auth-footer">
+      Não tem conta? <a href="register.html">Criar conta grátis</a>
+    </p>
+    <p class="auth-footer" style="margin-top:8px">
+      <a href="#" id="forgotLink">Esqueceu a senha?</a>
+    </p>
+    <div style="text-align:center;margin-top:16px">
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">☀️ Claro</button>
+    </div>
+  </div>
+
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // Redirecionar se já logado
+    if (localStorage.getItem('ca_token')) {
+      const user = JSON.parse(localStorage.getItem('ca_user') || '{}');
+      window.location.href = user.role === 'admin' ? 'admin.html' : 'dashboard.html';
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn   = document.getElementById('btnLogin');
+      const err   = document.getElementById('formError');
+      const email = document.getElementById('email').value.trim();
+      const pass  = document.getElementById('password').value;
+
+      btn.textContent = 'Entrando...';
+      btn.disabled = true;
+      err.classList.remove('show');
+
+      try {
+        const data = await API.post('/auth/login', { email, password: pass });
+        localStorage.setItem('ca_token', data.token);
+        localStorage.setItem('ca_user', JSON.stringify(data.user));
+        window.location.href = data.user.role === 'admin' ? 'admin.html' : 'dashboard.html';
+      } catch (ex) {
+        err.textContent = ex.message || 'E-mail ou senha incorretos.';
+        err.classList.add('show');
+        btn.textContent = 'Entrar';
+        btn.disabled = false;
+      }
+    });
+
+    // ── Forgot password modal ──
+    const forgotModal = document.getElementById('forgotModal');
+    document.getElementById('forgotLink').addEventListener('click', e => {
+      e.preventDefault();
+      forgotModal.style.display = 'flex';
+    });
+    document.getElementById('closeForgotModal').addEventListener('click', () => {
+      forgotModal.style.display = 'none';
+      document.getElementById('step1').style.display = '';
+      document.getElementById('step2').style.display = 'none';
+      document.getElementById('forgotError1').classList.remove('show');
+      document.getElementById('forgotError2').classList.remove('show');
+    });
+
+    let forgotEmailValue = '';
+
+    document.getElementById('btnSendCode').addEventListener('click', async () => {
+      const email = document.getElementById('forgotEmail').value.trim();
+      const errEl = document.getElementById('forgotError1');
+      errEl.classList.remove('show');
+      if (!email) { errEl.textContent = 'Informe o e-mail.'; errEl.classList.add('show'); return; }
+
+      try {
+        const data = await API.post('/auth/forgot-password', { email });
+        forgotEmailValue = email;
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = '';
+        // Mostrar código em modo demo
+        if (data.token) {
+          const demoEl = document.getElementById('demoCode');
+          demoEl.textContent = `[Demo] Código: ${data.token}`;
+          demoEl.style.display = 'block';
+        }
+      } catch (err) {
+        errEl.textContent = err.message || 'Erro.';
+        errEl.classList.add('show');
+      }
+    });
+
+    document.getElementById('btnResetPass').addEventListener('click', async () => {
+      const token       = document.getElementById('resetToken').value.trim();
+      const newPassword = document.getElementById('newPasswordReset').value;
+      const errEl       = document.getElementById('forgotError2');
+      errEl.classList.remove('show');
+
+      try {
+        await API.post('/auth/reset-password', { email: forgotEmailValue, token, newPassword });
+        showToast('Senha redefinida! Faça login.', 'success');
+        forgotModal.style.display = 'none';
+      } catch (err) {
+        errEl.textContent = err.message || 'Erro.';
+        errEl.classList.add('show');
+      }
+    });
+  </script>
+<!-- MODAL: Recuperação de senha -->
+<div class="modal-overlay" id="forgotModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center">
+  <div class="modal" style="max-width:420px;width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:28px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h3 style="font-size:1rem;font-weight:700">Recuperar senha</h3>
+      <button id="closeForgotModal" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--text3)">✕</button>
+    </div>
+
+    <!-- Passo 1: solicitar código -->
+    <div id="step1">
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:16px">Informe seu e-mail para receber o código de 6 dígitos.</p>
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" id="forgotEmail" placeholder="seu@email.com" />
+      </div>
+      <div class="form-error" id="forgotError1"></div>
+      <button class="btn-form" id="btnSendCode">Enviar código</button>
+      <p id="demoCode" style="margin-top:12px;font-size:.8rem;color:var(--text3);text-align:center;display:none"></p>
+    </div>
+
+    <!-- Passo 2: inserir código e nova senha -->
+    <div id="step2" style="display:none">
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:16px">Insira o código recebido e a nova senha.</p>
+      <div class="form-group">
+        <label>Código de 6 dígitos</label>
+        <input type="text" id="resetToken" maxlength="6" placeholder="000000" />
+      </div>
+      <div class="form-group">
+        <label>Nova senha</label>
+        <input type="password" id="newPasswordReset" placeholder="Mínimo 6 caracteres" minlength="6" />
+      </div>
+      <div class="form-error" id="forgotError2"></div>
+      <button class="btn-form" id="btnResetPass">Redefinir senha</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

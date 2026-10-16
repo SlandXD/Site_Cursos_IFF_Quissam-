@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Explore todas as trilhas de aprendizado de Construct 3.">
+  <meta property="og:title" content="Trilhas — Construct Academy">
+  <meta property="og:description" content="Explore todas as trilhas de aprendizado de Construct 3.">
+  <meta property="og:type" content="website">
+  <title>Trilhas — Construct Academy</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/" class="sidebar-logo"><span class="logo-icon">◈</span>Construct<strong>Academy</strong></a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">Menu</div>
+      <a href="dashboard.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Início
+      </a>
+      <a href="cursos.html" class="sidebar-link active">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Trilhas
+      </a>
+      <a href="certificados.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6" stroke="currentColor" stroke-width="1.8"/><path d="M9 21l3-3 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Certificados
+      </a>
+      <a href="ranking.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+            stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+        Ranking
+      </a>
+      <div class="sidebar-section" style="margin-top:12px">Conta</div>
+      <a href="perfil.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Perfil
+      </a>
+      <a href="#" class="sidebar-link" id="logoutBtn">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sair
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div>
+          <div class="user-name" id="sidebarName">—</div>
+          <div class="user-level" id="sidebarLevel">Nível 1</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="top-bar">
+      <button onclick="document.getElementById('sidebar').classList.toggle('open')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px">
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+      </button>
+      <span class="top-bar-title">Trilhas de Aprendizado</span>
+      <div style="position:relative;margin-left:auto">
+        <button id="bellBtn" aria-label="Notificações"
+          style="background:none;border:none;cursor:pointer;font-size:1.1rem;
+                 padding:6px;display:flex;align-items:center;gap:4px;color:var(--text2)">
+          🔔
+          <span id="bellBadge"
+            style="display:none;position:absolute;top:0;right:0;
+                   background:var(--red);color:#fff;font-size:.6rem;
+                   font-weight:700;width:16px;height:16px;border-radius:50%;
+                   align-items:center;justify-content:center">0</span>
+        </button>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">☀️ Claro</button>
+    </header>
+
+    <div class="page-content">
+      <!-- Detalhe de curso (quando id na URL) -->
+      <div id="courseDetail" style="display:none"></div>
+
+      <!-- Lista de cursos -->
+      <div id="coursesList">
+        <div style="margin-bottom:28px">
+          <h1 style="font-size:1.5rem;font-weight:800;margin-bottom:6px">Todas as trilhas</h1>
+          <p style="color:var(--text2);font-size:.9rem">Escolha por onde começar. Siga a ordem recomendada para melhores resultados.</p>
+        </div>
+        <!-- Search & filter bar -->
+        <div id="filterBar" style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:20px">
+          <input id="searchInput" type="text" placeholder="Buscar trilha..."
+            style="flex:1;min-width:200px;padding:9px 14px;background:var(--surface);
+                   border:1px solid var(--border2);border-radius:9px;color:var(--text);
+                   font-size:.88rem;outline:none;font-family:inherit"
+            oninput="filterCourses()" />
+          <div id="levelFilters" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+        </div>
+        <div id="noResults" style="display:none;padding:40px;text-align:center;color:var(--text2);font-size:.9rem">
+          Nenhuma trilha encontrada
+        </div>
+        <div id="coursesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>
+  requireAuth();
+
+  document.getElementById('logoutBtn').addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('ca_token');
+    localStorage.removeItem('ca_user');
+    window.location.href = '/pages/login.html';
+  });
+
+  // ── Course cache & filter state ──────────────────────────────
+  let allCoursesCache = [];
+  let activeLevel = 'Todos';
+
+  async function loadSidebar() {
+    try {
+      const d = await API.get('/student/dashboard');
+      document.getElementById('sidebarAvatar').textContent = d.user.avatar || d.user.name.charAt(0).toUpperCase();
+      document.getElementById('sidebarName').textContent   = d.user.name;
+      document.getElementById('sidebarLevel').textContent  = `Nível ${d.user.level} — ${d.user.xp} XP`;
+    } catch {}
+  }
+
+  async function loadCourseDetail(courseId) {
+    const dl = document.getElementById('courseDetail');
+    const ll = document.getElementById('coursesList');
+    try {
+      const data = await API.get(`/courses/${courseId}`);
+      ll.style.display = 'none';
+      dl.style.display = 'block';
+
+      // Hide filter bar when showing course detail
+      const fb = document.getElementById('filterBar');
+      if (fb) fb.style.display = 'none';
+
+      const enrolled = data.enrolled;
+      const progress = data.progress || 0;
+
+      // Função utilitária para escapar HTML e evitar XSS
+      const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+      // Se curso concluído, não mostrar o botão "Continuar" com lesson=null
+      const allLessons = data.lessons || [];
+      const allDone = enrolled && allLessons.length > 0 && allLessons.every(l => l.status === 'completed');
+
+      let actionBtn;
+      if (!enrolled) {
+        actionBtn = `<button id="enrollBtn" class="btn-form">Matricular-se grátis</button>`;
+      } else if (allDone) {
+        actionBtn = `<a href="certificados.html" class="btn-form" style="display:block;text-align:center">🏆 Ver certificado</a>`;
+      } else {
+        actionBtn = `<button onclick="window.location.href='player.html?course=${esc(data.id)}&lesson=${esc(data.nextLesson)}'" class="btn-form">Continuar trilha</button>`;
+      }
+
+      dl.innerHTML = `
+        <div style="margin-bottom:20px">
+          <a href="cursos.html" style="font-size:.85rem;color:var(--text3)">← Voltar para trilhas</a>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:28px;align-items:start" class="course-detail-grid">
+          <div>
+            <div style="font-size:.75rem;color:var(--accent2);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px"></div>
+            <h1 style="font-size:1.8rem;font-weight:800;margin-bottom:12px"></h1>
+            <p style="color:var(--text2);line-height:1.7;margin-bottom:28px"></p>
+            <h2 style="font-size:1rem;font-weight:700;margin-bottom:16px">Conteúdo da trilha</h2>
+            <div class="modules-list" id="lessonsList"></div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:24px;position:sticky;top:80px">
+            <div style="text-align:center;margin-bottom:20px">
+              <div id="courseProgressRing" class="progress-ring" style="justify-content:center;margin-bottom:12px"></div>
+              <div style="font-size:.85rem;color:var(--text2)">${Math.round(progress)}% concluído</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:.83rem;color:var(--text2);margin-bottom:20px">
+              <div>📚 ${esc(data.lessons.length)} aulas</div>
+              <div>⏱ ${esc(data.duration || '—')}</div>
+              <div>📊 ${esc(data.level)}</div>
+            </div>
+            ${actionBtn}
+          </div>
+        </div>
+      `;
+
+      // Preenche campos de texto com textContent para evitar XSS
+      dl.querySelector('h1').textContent = data.name || '';
+      dl.querySelector('p').textContent  = data.description || '';
+      dl.querySelector('div[style*="accent2"]').textContent = data.level || '';
+
+      buildProgressRing(document.getElementById('courseProgressRing'), progress, 72, 6);
+
+      // Carrega aulas com status de progresso
+      const lessonsList = document.getElementById('lessonsList');
+      lessonsList.innerHTML = data.lessons.map((l, i) => {
+        let statusClass = 'lock', icon = '🔒', badgeClass = 'badge-locked', badgeText = 'Bloqueado';
+        if (l.status === 'completed') { statusClass = 'done'; icon = '✓'; badgeClass = 'badge-done';    badgeText = 'Concluído'; }
+        if (l.status === 'current')   { statusClass = 'curr'; icon = '▶'; badgeClass = 'badge-current'; badgeText = 'Disponível'; }
+        const clickable = l.status !== 'locked';
+        const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+        return `
+          <div class="module-item ${l.status === 'locked' ? 'locked' : ''} ${l.status === 'completed' ? 'completed' : ''}"
+               ${clickable ? `onclick="window.location.href='player.html?course=${esc(data.id)}&lesson=${esc(l.id)}'"` : ''}>
+            <div class="module-status ${statusClass}">${icon}</div>
+            <div class="module-info">
+              <h4>${i + 1}. ${esc(l.title)}</h4>
+              <span>${l.type === 'video' ? '🎬 Vídeo' : '📝 Atividade'} • ${esc(l.duration || '—')}</span>
+            </div>
+            <span class="module-badge ${badgeClass}">${badgeText}</span>
+          </div>
+        `;
+      }).join('');
+
+      if (!enrolled) {
+        document.getElementById('enrollBtn').addEventListener('click', async () => {
+          try {
+            await API.post(`/courses/${data.id}/enroll`);
+            showToast('Matriculado com sucesso!', 'success');
+            loadCourseDetail(courseId);
+          } catch (err) {
+            showToast(err.message, 'error');
+          }
+        });
+      }
+    } catch (err) {
+      showToast('Erro ao carregar curso', 'error');
+    }
+  }
+
+  // ── Render course cards ──────────────────────────────────────
+  function renderCourseCards(courses, grid) {
+    const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    grid.innerHTML = courses.map(c => `
+      <div class="trilha-card ${c.featured ? 'featured' : ''}" style="cursor:pointer" onclick="window.location.href='cursos.html?id=${esc(c.id)}'">
+        ${c.featured ? '<div class="trilha-badge-feat">Mais popular</div>' : ''}
+        <div class="trilha-icon">${esc(c.emoji || '🎮')}</div>
+        <div class="trilha-level">${esc(c.level)}</div>
+        <h3>${esc(c.name)}</h3>
+        <p>${esc(c.shortDesc)}</p>
+        <div class="trilha-meta">
+          <span>${esc(c.totalLessons)} aulas</span><span>·</span><span>${esc(c.duration)}</span>
+        </div>
+        ${c.myProgress !== undefined ? `
+          <div style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text3);margin-bottom:4px">
+              <span>Progresso</span><span>${Math.round(c.myProgress)}%</span>
+            </div>
+            <div style="height:4px;background:var(--border);border-radius:99px;overflow:hidden">
+              <div style="height:100%;width:${c.myProgress}%;background:var(--accent);border-radius:99px"></div>
+            </div>
+          </div>
+        ` : ''}
+        <div class="btn-trilha">${c.myProgress !== undefined ? 'Continuar' : 'Ver trilha'}</div>
+      </div>
+    `).join('');
+  }
+
+  // ── Level filter functions ───────────────────────────────────
+  function buildLevelFilters(courses) {
+    const levels = ['Todos', ...new Set(courses.map(c => c.level).filter(Boolean))];
+    const container = document.getElementById('levelFilters');
+    container.innerHTML = levels.map(l => `
+      <button onclick="setLevel('${l}')"
+        id="lvl-${l.replace(/\s/g,'_')}"
+        style="padding:6px 14px;border-radius:99px;border:1px solid var(--border2);
+               background:${l==='Todos'?'var(--accent)':'var(--surface)'};
+               color:${l==='Todos'?'#fff':'var(--text2)'};
+               font-size:.8rem;font-weight:600;cursor:pointer;transition:.2s">${l}</button>
+    `).join('');
+  }
+
+  function setLevel(level) {
+    activeLevel = level;
+    document.querySelectorAll('#levelFilters button').forEach(b => {
+      const isActive = b.textContent.trim() === level;
+      b.style.background = isActive ? 'var(--accent)' : 'var(--surface)';
+      b.style.color = isActive ? '#fff' : 'var(--text2)';
+      b.style.borderColor = isActive ? 'var(--accent)' : 'var(--border2)';
+    });
+    filterCourses();
+  }
+
+  function filterCourses() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = allCoursesCache.filter(c => {
+      const matchSearch = !q || c.name.toLowerCase().includes(q) || (c.shortDesc || '').toLowerCase().includes(q);
+      const matchLevel  = activeLevel === 'Todos' || c.level === activeLevel;
+      return matchSearch && matchLevel;
+    });
+    const grid = document.getElementById('coursesGrid');
+    const noResults = document.getElementById('noResults');
+    if (filtered.length === 0) {
+      grid.innerHTML = '';
+      noResults.style.display = 'block';
+    } else {
+      noResults.style.display = 'none';
+      renderCourseCards(filtered, grid);
+    }
+  }
+
+  async function loadCourses(page = 1) {
+    // Show skeleton cards while loading
+    const skeletonCard = `<div class="skeleton-card">
+  <div class="skeleton skeleton-icon"></div>
+  <div class="skeleton skeleton-text short"></div>
+  <div class="skeleton skeleton-title skeleton"></div>
+  <div class="skeleton skeleton-text"></div>
+  <div class="skeleton skeleton-text"></div>
+  <div class="skeleton skeleton-text short"></div>
+</div>`;
+    const grid = document.getElementById('coursesGrid');
+    if (grid) grid.innerHTML = Array(6).fill(skeletonCard).join('');
+
+    try {
+      const data = await API.get(`/courses?page=${page}&limit=6`);
+      const coursesGrid = document.getElementById('coursesGrid');
+
+      // Populate cache and build filters
+      allCoursesCache = data.courses || [];
+      buildLevelFilters(allCoursesCache);
+
+      // Restore filter bar visibility
+      const fb = document.getElementById('filterBar');
+      if (fb) fb.style.display = 'flex';
+
+      renderCourseCards(allCoursesCache, coursesGrid);
+
+      // Controles de paginação
+      let paginationEl = document.getElementById('coursePagination');
+      if (!paginationEl) {
+        paginationEl = document.createElement('div');
+        paginationEl.id = 'coursePagination';
+        paginationEl.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px';
+        document.getElementById('coursesList').appendChild(paginationEl);
+      }
+
+      const p = data.pagination;
+      if (!p || p.pages <= 1) { paginationEl.innerHTML = ''; return; }
+
+      paginationEl.innerHTML = `
+        <button onclick="loadCourses(${p.page - 1})" ${p.page <= 1 ? 'disabled' : ''}
+          style="padding:7px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;font-size:.85rem;${p.page <= 1 ? 'opacity:.4;cursor:not-allowed' : ''}">
+          ← Anterior
+        </button>
+        <span style="font-size:.85rem;color:var(--text2)">Página ${p.page} de ${p.pages}</span>
+        <button onclick="loadCourses(${p.page + 1})" ${p.page >= p.pages ? 'disabled' : ''}
+          style="padding:7px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;font-size:.85rem;${p.page >= p.pages ? 'opacity:.4;cursor:not-allowed' : ''}">
+          Próxima →
+        </button>
+      `;
+    } catch (err) {
+      showToast('Erro ao carregar trilhas', 'error');
+    }
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const courseId = params.get('id');
+
+  loadSidebar();
+  if (courseId) {
+    loadCourseDetail(courseId);
+  } else {
+    loadCourses();
+  }
+
+  window.initBell && window.initBell();
+
+  // Sidebar overlay for mobile
+  (function() {
+    const overlay = document.createElement('div');
+    overlay.id = 'sidebarOverlay';
+    overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;';
+    document.body.appendChild(overlay);
+    const sidebar = document.getElementById('sidebar');
+    const toggle  = () => {
+      const open = sidebar.classList.toggle('open');
+      overlay.style.display = open ? 'block' : 'none';
+    };
+    document.querySelectorAll('[onclick*="sidebar"]').forEach(btn => {
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', toggle);
+    });
+    document.getElementById('sidebarToggle')?.addEventListener('click', toggle);
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.style.display = 'none';
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Veja o ranking dos estudantes da Construct Academy.">
+  <meta property="og:title" content="Ranking — Construct Academy">
+  <meta property="og:description" content="Veja o ranking dos estudantes da Construct Academy.">
+  <meta property="og:type" content="website">
+  <title>Ranking — Construct Academy</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/" class="sidebar-logo">
+        <span class="logo-icon">◈</span>
+        Construct<strong>Academy</strong>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">Menu</div>
+      <a href="dashboard.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Início
+      </a>
+      <a href="cursos.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Trilhas
+      </a>
+      <a href="certificados.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6" stroke="currentColor" stroke-width="1.8"/><path d="M9 21l3-3 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Certificados
+      </a>
+      <a href="ranking.html" class="sidebar-link active" aria-current="page">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+            stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+        Ranking
+      </a>
+      <div class="sidebar-section" style="margin-top:12px">Conta</div>
+      <a href="perfil.html" class="sidebar-link">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Perfil
+      </a>
+      <a href="#" class="sidebar-link" id="logoutBtn">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sair
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div>
+          <div class="user-name" id="sidebarName">Carregando...</div>
+          <div class="user-level" id="sidebarLevel">Nível 1</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <header class="top-bar">
+      <button class="nav-toggle" id="sidebarToggle" aria-label="Menu" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px">
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+      </button>
+      <span class="top-bar-title">Ranking</span>
+      <div style="position:relative">
+        <button id="bellBtn" aria-label="Notificações"
+          style="background:none;border:none;cursor:pointer;font-size:1.1rem;
+                 padding:6px;display:flex;align-items:center;gap:4px;color:var(--text2)">
+          🔔
+          <span id="bellBadge"
+            style="display:none;position:absolute;top:0;right:0;
+                   background:var(--red);color:#fff;font-size:.6rem;
+                   font-weight:700;width:16px;height:16px;border-radius:50%;
+                   align-items:center;justify-content:center">0</span>
+        </button>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" style="margin-left:8px">☀️ Claro</button>
+    </header>
+
+    <div class="page-content">
+      <div id="rankingContainer" style="max-width:800px;margin:0 auto">
+        <h2 style="margin-bottom:24px">🏆 Ranking de Alunos</h2>
+        <div id="rankingTable">Carregando...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>
+  requireAuth();
+
+  document.getElementById('logoutBtn').addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('ca_token');
+    localStorage.removeItem('ca_user');
+    window.location.href = '/pages/login.html';
+  });
+
+  // Populate sidebar user info from local storage while data loads
+  const cachedUser = JSON.parse(localStorage.getItem('ca_user') || '{}');
+  if (cachedUser.name) {
+    document.getElementById('sidebarAvatar').textContent = cachedUser.avatar || cachedUser.name.charAt(0).toUpperCase();
+    document.getElementById('sidebarName').textContent   = cachedUser.name;
+    document.getElementById('sidebarLevel').textContent  = `Nível ${cachedUser.level || 1}`;
+  }
+
+  async function loadRanking() {
+    try {
+      const data = await API.get('/student/ranking');
+      const medals = ['🥇','🥈','🥉'];
+      const rows = data.ranking.map(r => `
+        <tr style="${r.isMe ? 'background:rgba(124,92,252,.1);border-left:3px solid var(--accent);' : ''}">
+          <td style="padding:12px 16px;font-weight:700;font-size:1.1rem">${medals[r.position-1] || r.position}</td>
+          <td style="padding:12px 16px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem">${r.avatar}</div>
+              <span>${r.name}${r.isMe ? ' <span style="font-size:.7rem;color:var(--accent);font-weight:600">(você)</span>' : ''}</span>
+            </div>
+          </td>
+          <td style="padding:12px 16px;text-align:center">Nível ${r.level}</td>
+          <td style="padding:12px 16px;text-align:center;font-weight:600">${r.xp} XP</td>
+          <td style="padding:12px 16px;text-align:center">${r.badges_count} 🏅</td>
+        </tr>
+      `).join('');
+      document.getElementById('rankingTable').innerHTML = `
+        <table style="width:100%;border-collapse:collapse;background:var(--surface);border-radius:16px;overflow:hidden">
+          <thead>
+            <tr style="border-bottom:2px solid var(--border)">
+              <th style="padding:12px 16px;text-align:left;color:var(--text2);font-size:.8rem;font-weight:600">POSIÇÃO</th>
+              <th style="padding:12px 16px;text-align:left;color:var(--text2);font-size:.8rem;font-weight:600">ALUNO</th>
+              <th style="padding:12px 16px;text-align:center;color:var(--text2);font-size:.8rem;font-weight:600">NÍVEL</th>
+              <th style="padding:12px 16px;text-align:center;color:var(--text2);font-size:.8rem;font-weight:600">XP</th>
+              <th style="padding:12px 16px;text-align:center;color:var(--text2);font-size:.8rem;font-weight:600">CONQUISTAS</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+    } catch(e) {
+      document.getElementById('rankingTable').innerHTML = '<p style="padding:24px;color:var(--text2)">Erro ao carregar ranking.</p>';
+    }
+  }
+
+  loadRanking();
+  window.initBell && window.initBell();
+
+  // Sidebar overlay for mobile
+  (function() {
+    const overlay = document.createElement('div');
+    overlay.id = 'sidebarOverlay';
+    overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;';
+    document.body.appendChild(overlay);
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    const toggle  = () => {
+      const open = sidebar.classList.toggle('open');
+      overlay.style.display = open ? 'block' : 'none';
+    };
+    document.querySelectorAll('[onclick*="sidebar"]').forEach(btn => {
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', toggle);
+    });
+    document.getElementById('sidebarToggle')?.addEventListener('click', toggle);
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.style.display = 'none';
+    });
+  })();
+</script>
+</body>
+</html>

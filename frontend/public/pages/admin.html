@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Painel administrativo da Construct Academy.">
+  <meta property="og:title" content="Admin — Construct Academy">
+  <meta property="og:description" content="Painel administrativo da Construct Academy.">
+  <meta property="og:type" content="website">
+  <title>Admin — Construct Academy</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- SIDEBAR ADMIN -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/" class="sidebar-logo"><span class="logo-icon">◈</span>Construct<strong>Academy</strong></a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">Painel Admin</div>
+      <a href="#" class="sidebar-link active" data-tab="overview">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/></svg>
+        Visão geral
+      </a>
+      <a href="#" class="sidebar-link" data-tab="courses">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Trilhas
+      </a>
+      <a href="#" class="sidebar-link" data-tab="users">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 3.13a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Alunos
+      </a>
+      <div class="sidebar-section" style="margin-top:12px">Conta</div>
+      <a href="#" class="sidebar-link" id="logoutBtn">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sair
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" style="background:linear-gradient(135deg,#f59e0b,#f97316)">A</div>
+        <div>
+          <div class="user-name">Administrador</div>
+          <div class="user-level" style="color:var(--yellow)">Admin</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <header class="top-bar">
+      <button onclick="document.getElementById('sidebar').classList.toggle('open')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px">
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--text);border-radius:2px"></span>
+      </button>
+      <span class="top-bar-title" id="topBarTitle">Visão Geral</span>
+      <div style="position:relative">
+        <button id="bellBtn" aria-label="Notificações"
+          style="background:none;border:none;cursor:pointer;font-size:1.1rem;
+                 padding:6px;display:flex;align-items:center;gap:4px;color:var(--text2)">
+          🔔
+          <span id="bellBadge"
+            style="display:none;position:absolute;top:0;right:0;
+                   background:var(--red);color:#fff;font-size:.6rem;
+                   font-weight:700;width:16px;height:16px;border-radius:50%;
+                   align-items:center;justify-content:center">0</span>
+        </button>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" style="margin-left:auto">☀️ Claro</button>
+    </header>
+
+    <!-- TAB: OVERVIEW -->
+    <div id="tab-overview" class="page-content tab-content">
+      <div class="admin-grid" id="overviewStats"></div>
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <h3>Atividade recente</h3>
+        </div>
+        <table>
+          <thead><tr><th>Aluno</th><th>Ação</th><th>Trilha</th><th>Quando</th></tr></thead>
+          <tbody id="activityLog"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: COURSES -->
+    <div id="tab-courses" class="page-content tab-content" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+        <div>
+          <h1 style="font-size:1.4rem;font-weight:800;margin-bottom:4px">Gerenciar Trilhas</h1>
+          <p style="color:var(--text2);font-size:.88rem">Crie, edite e organize os cursos e aulas.</p>
+        </div>
+        <button class="btn-sm" id="btnNewCourse">+ Nova trilha</button>
+      </div>
+      <div id="coursesList" class="modules-list"></div>
+    </div>
+
+    <!-- TAB: USERS -->
+    <div id="tab-users" class="page-content tab-content" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+        <div>
+          <h1 style="font-size:1.4rem;font-weight:800;margin-bottom:4px">Alunos cadastrados</h1>
+        </div>
+        <button class="btn-sm" id="btnExportCsv">⬇ Exportar CSV</button>
+      </div>
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <h3>Todos os alunos</h3>
+          <input id="searchUsers" type="text" placeholder="Buscar por nome ou email..."
+            style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:7px 12px;color:var(--text);font-size:.83rem;outline:none;width:240px" />
+        </div>
+        <table>
+          <thead><tr><th>Nome</th><th>E-mail</th><th>Nível</th><th>XP</th><th>Trilhas</th><th>Cadastro</th><th>Ações</th></tr></thead>
+          <tbody id="usersList"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Criar/Editar Trilha -->
+<div class="modal-overlay" id="courseModal">
+  <div class="modal" style="max-width:600px;max-height:90vh;overflow-y:auto">
+    <div class="modal-header">
+      <h3 id="courseModalTitle">Nova Trilha</h3>
+      <button class="modal-close" id="closeCourseModal">✕</button>
+    </div>
+    <div id="courseModalBody"></div>
+  </div>
+</div>
+
+<!-- MODAL: Gerenciar Aulas -->
+<div class="modal-overlay" id="lessonsModal">
+  <div class="modal" style="max-width:700px;max-height:90vh;overflow-y:auto">
+    <div class="modal-header">
+      <h3 id="lessonsModalTitle">Aulas da trilha</h3>
+      <button class="modal-close" id="closeLessonsModal">✕</button>
+    </div>
+    <div id="lessonsModalBody"></div>
+  </div>
+</div>
+
+<!-- MODAL: Nova/Editar Aula -->
+<div class="modal-overlay" id="lessonModal">
+  <div class="modal" style="max-width:580px;max-height:90vh;overflow-y:auto">
+    <div class="modal-header">
+      <h3 id="lessonModalTitle">Nova Aula</h3>
+      <button class="modal-close" id="closeLessonModal">✕</button>
+    </div>
+    <div id="lessonModalBody"></div>
+  </div>
+</div>
+
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>
+  requireAuth();
+  const user = JSON.parse(localStorage.getItem('ca_user') || '{}');
+  if (user.role !== 'admin') window.location.href = 'dashboard.html';
+
+  // ── Tabs ────────────────────────────────────────────────
+  const tabTitles = { overview: 'Visão Geral', courses: 'Trilhas', users: 'Alunos' };
+  document.querySelectorAll('[data-tab]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const tab = link.dataset.tab;
+      document.querySelectorAll('[data-tab]').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+      document.getElementById(`tab-${tab}`).style.display = '';
+      document.getElementById('topBarTitle').textContent = tabTitles[tab] || tab;
+      if (tab === 'overview') loadOverview();
+      if (tab === 'courses')  loadCourses();
+      if (tab === 'users')    loadUsers();
+    });
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('ca_token');
+    localStorage.removeItem('ca_user');
+    window.location.href = '/pages/login.html';
+  });
+
+  // Modal helpers
+  const openModal  = id => document.getElementById(id).classList.add('open');
+  const closeModal = id => document.getElementById(id).classList.remove('open');
+  document.getElementById('closeCourseModal').onclick  = () => closeModal('courseModal');
+  document.getElementById('closeLessonsModal').onclick = () => closeModal('lessonsModal');
+  document.getElementById('closeLessonModal').onclick  = () => closeModal('lessonModal');
+
+  // ── Overview ────────────────────────────────────────────
+  async function loadOverview() {
+    try {
+      const data = await API.get('/admin/overview');
+      document.getElementById('overviewStats').innerHTML = [
+        { label: 'Total de alunos',    value: data.totalUsers,    delta: `+${data.newUsersWeek} esta semana` },
+        { label: 'Aulas assistidas',   value: data.totalWatched,  delta: `hoje` },
+        { label: 'Atividades feitas',  value: data.totalActivity, delta: `total` },
+        { label: 'Certificados',       value: data.totalCerts,    delta: `emitidos` },
+      ].map(s => `
+        <div class="admin-stat-card">
+          <div class="label">${s.label}</div>
+          <div class="value">${s.value}</div>
+          <div class="delta">${s.delta}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('activityLog').innerHTML = (data.recentActivity || []).map(a => `
+        <tr>
+          <td>${a.userName}</td>
+          <td>${a.action}</td>
+          <td>${a.courseName || '—'}</td>
+          <td style="color:var(--text3)">${timeAgo(a.createdAt)}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--text3);padding:20px">Nenhuma atividade ainda</td></tr>';
+    } catch (err) {
+      showToast('Erro ao carregar overview', 'error');
+    }
+  }
+
+  // ── Courses ─────────────────────────────────────────────
+  async function loadCourses() {
+    try {
+      const data = await API.get('/admin/courses');
+      const list = document.getElementById('coursesList');
+      list.innerHTML = data.courses.map(c => `
+        <div class="module-item">
+          <div class="module-status curr">${c.emoji || '🎮'}</div>
+          <div class="module-info">
+            <h4>${c.name}</h4>
+            <span>${c.level} · ${c.lessons ? c.lessons.length : 0} aulas · ${c.enrollments || 0} alunos</span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn-sm secondary" onclick="openLessons('${c.id}', '${c.name.replace(/'/g, "\\'")}')">Aulas</button>
+            <button class="btn-sm secondary" onclick="editCourse('${c.id}')">Editar</button>
+            <button class="btn-sm danger" onclick="deleteCourse('${c.id}')">Excluir</button>
+          </div>
+        </div>
+      `).join('') || '<p style="color:var(--text3);padding:16px">Nenhuma trilha criada ainda.</p>';
+    } catch (err) {
+      showToast('Erro ao carregar trilhas', 'error');
+    }
+  }
+
+  function buildCourseForm(course = {}) {
+    return `
+      <form id="courseForm" style="display:flex;flex-direction:column;gap:16px">
+        <div class="form-group">
+          <label>Nome da trilha *</label>
+          <input type="text" id="cf_name" value="${course.name || ''}" placeholder="Ex: Plataformer Completo" required />
+        </div>
+        <div class="form-group">
+          <label>Descrição curta</label>
+          <input type="text" id="cf_shortDesc" value="${course.shortDesc || ''}" placeholder="Uma frase descrevendo o curso" />
+        </div>
+        <div class="form-group">
+          <label>Descrição completa</label>
+          <textarea id="cf_description" placeholder="Descreva o conteúdo em detalhes..." rows="3"
+            style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:10px 12px;font-size:.88rem;font-family:inherit;resize:vertical;outline:none">${course.description || ''}</textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group" style="margin:0">
+            <label>Nível</label>
+            <select id="cf_level" style="width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;color:var(--text);font-size:.88rem;outline:none">
+              <option value="Iniciante"    ${course.level === 'Iniciante'    ? 'selected' : ''}>Iniciante</option>
+              <option value="Intermediário"${course.level === 'Intermediário'? 'selected' : ''}>Intermediário</option>
+              <option value="Avançado"     ${course.level === 'Avançado'     ? 'selected' : ''}>Avançado</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label>Emoji da trilha</label>
+            <input type="text" id="cf_emoji" value="${course.emoji || '🎮'}" maxlength="4" />
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group" style="margin:0">
+            <label>Duração estimada</label>
+            <input type="text" id="cf_duration" value="${course.duration || ''}" placeholder="Ex: ~6h" />
+          </div>
+          <div class="form-group" style="margin:0">
+            <label>Destaque?</label>
+            <select id="cf_featured" style="width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;color:var(--text);font-size:.88rem;outline:none">
+              <option value="false" ${!course.featured ? 'selected' : ''}>Não</option>
+              <option value="true"  ${course.featured  ? 'selected' : ''}>Sim — "Mais popular"</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-actions" style="margin-top:8px">
+          <button type="button" class="btn-sm secondary" onclick="closeModal('courseModal')">Cancelar</button>
+          <button type="submit" class="btn-sm" id="saveCourseBtn">Salvar trilha</button>
+        </div>
+      </form>
+    `;
+  }
+
+  document.getElementById('btnNewCourse').addEventListener('click', () => {
+    document.getElementById('courseModalTitle').textContent = 'Nova Trilha';
+    document.getElementById('courseModalBody').innerHTML = buildCourseForm();
+    document.getElementById('courseForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      await saveCourse(null);
+    });
+    openModal('courseModal');
+  });
+
+  async function editCourse(id) {
+    try {
+      const data = await API.get(`/admin/courses/${id}`);
+      document.getElementById('courseModalTitle').textContent = 'Editar Trilha';
+      document.getElementById('courseModalBody').innerHTML = buildCourseForm(data.course);
+      document.getElementById('courseForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        await saveCourse(id);
+      });
+      openModal('courseModal');
+    } catch { showToast('Erro ao carregar trilha', 'error'); }
+  }
+
+  async function saveCourse(id) {
+    const btn = document.getElementById('saveCourseBtn');
+    btn.disabled = true; btn.textContent = 'Salvando...';
+    const body = {
+      name:        document.getElementById('cf_name').value.trim(),
+      shortDesc:   document.getElementById('cf_shortDesc').value.trim(),
+      description: document.getElementById('cf_description').value.trim(),
+      level:       document.getElementById('cf_level').value,
+      emoji:       document.getElementById('cf_emoji').value.trim(),
+      duration:    document.getElementById('cf_duration').value.trim(),
+      featured:    document.getElementById('cf_featured').value === 'true',
+    };
+    try {
+      if (id) {
+        await API.put(`/admin/courses/${id}`, body);
+        showToast('Trilha atualizada!', 'success');
+      } else {
+        await API.post('/admin/courses', body);
+        showToast('Trilha criada!', 'success');
+      }
+      closeModal('courseModal');
+      loadCourses();
+    } catch (err) {
+      showToast(err.message, 'error');
+      btn.disabled = false; btn.textContent = 'Salvar trilha';
+    }
+  }
+
+  async function deleteCourse(id) {
+    if (!confirm('Excluir esta trilha? Essa ação não pode ser desfeita.')) return;
+    try {
+      await API.del(`/admin/courses/${id}`);
+      showToast('Trilha excluída.', 'success');
+      loadCourses();
+    } catch (err) { showToast(err.message, 'error'); }
+  }
+
+  // ── Lessons (dentro de curso) ────────────────────────────
+  let currentCourseId = null;
+
+  async function openLessons(courseId, courseName) {
+    currentCourseId = courseId;
+    document.getElementById('lessonsModalTitle').textContent = `Aulas: ${courseName}`;
+    await renderLessonsModal();
+    openModal('lessonsModal');
+  }
+
+  async function renderLessonsModal() {
+    try {
+      const data = await API.get(`/admin/courses/${currentCourseId}/lessons`);
+      const body = document.getElementById('lessonsModalBody');
+      body.innerHTML = `
+        <div style="margin-bottom:16px;text-align:right">
+          <button class="btn-sm" id="btnAddLesson">+ Adicionar aula</button>
+        </div>
+        <div id="lessonsDraggable" style="display:flex;flex-direction:column;gap:8px">
+          ${data.lessons.map((l, i) => `
+            <div class="module-item" data-id="${l.id}" style="cursor:default">
+              <div class="module-status curr" style="font-size:.75rem;font-weight:700">${i + 1}</div>
+              <div class="module-info">
+                <h4>${l.title}</h4>
+                <span>${l.type === 'video' ? '🎬 Vídeo' : '📝 Atividade'} · ${l.duration || '—'}</span>
+              </div>
+              <div style="display:flex;gap:6px">
+                <button class="btn-sm secondary" onclick="editLesson('${l.id}')">Editar</button>
+                <button class="btn-sm danger"     onclick="deleteLesson('${l.id}')">✕</button>
+              </div>
+            </div>
+          `).join('') || '<p style="color:var(--text3);text-align:center;padding:20px">Nenhuma aula ainda. Adicione a primeira!</p>'}
+        </div>
+        <p style="font-size:.75rem;color:var(--text3);margin-top:12px">As aulas são liberadas em ordem sequencial. O aluno só acessa a próxima após concluir a anterior.</p>
+      `;
+      document.getElementById('btnAddLesson').onclick = () => openLessonForm(null);
+    } catch (err) { showToast('Erro ao carregar aulas', 'error'); }
+  }
+
+  function buildLessonForm(lesson = {}) {
+    const isActivity = lesson.type === 'activity';
+    return `
+      <form id="lessonForm" style="display:flex;flex-direction:column;gap:14px">
+        <div class="form-group">
+          <label>Título da aula *</label>
+          <input type="text" id="lf_title" value="${lesson.title || ''}" placeholder="Ex: Criando seu primeiro sprite" required />
+        </div>
+        <div class="form-group">
+          <label>Tipo</label>
+          <select id="lf_type" style="width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;color:var(--text);font-size:.88rem;outline:none" onchange="toggleLessonType(this.value)">
+            <option value="video"    ${!isActivity ? 'selected' : ''}>🎬 Vídeo</option>
+            <option value="activity" ${isActivity  ? 'selected' : ''}>📝 Atividade</option>
+          </select>
+        </div>
+
+        <div id="videoFields" style="${isActivity ? 'display:none' : ''}">
+          <div class="form-group">
+            <label>Tipo de vídeo</label>
+            <select id="lf_videoType" style="width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;color:var(--text);font-size:.88rem;outline:none">
+              <option value="youtube" ${lesson.videoType === 'youtube' || !lesson.videoType ? 'selected' : ''}>YouTube</option>
+              <option value="url"     ${lesson.videoType === 'url'     ? 'selected' : ''}>URL direta (MP4)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>URL do vídeo</label>
+            <input type="text" id="lf_videoUrl" value="${lesson.videoUrl || ''}" placeholder="https://youtube.com/watch?v=... ou URL do MP4" />
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="form-group" style="margin:0">
+              <label>Duração</label>
+              <input type="text" id="lf_duration" value="${lesson.duration || ''}" placeholder="Ex: 12m ou 1h20m" />
+            </div>
+            <div class="form-group" style="margin:0">
+              <label>% mínimo para concluir</label>
+              <input type="number" id="lf_requiredPct" value="${lesson.requiredPercent || 80}" min="10" max="100" />
+            </div>
+          </div>
+        </div>
+
+        <div id="activityFields" style="${isActivity ? '' : 'display:none'}">
+          <div class="form-group">
+            <label>Título da atividade</label>
+            <input type="text" id="lf_actTitle" value="${lesson.activityTitle || ''}" placeholder="Ex: Teste seus conhecimentos" />
+          </div>
+          <div id="questionsContainer" style="display:flex;flex-direction:column;gap:12px;margin-bottom:12px"></div>
+          <button type="button" class="btn-sm secondary" id="btnAddQuestion">+ Adicionar questão</button>
+        </div>
+
+        <div class="form-group">
+          <label>Descrição / resumo da aula</label>
+          <textarea id="lf_description" placeholder="O que o aluno vai aprender..." rows="2"
+            style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:10px 12px;font-size:.88rem;font-family:inherit;resize:vertical;outline:none">${lesson.description || ''}</textarea>
+        </div>
+
+        <input type="hidden" id="lf_existingQuestions" value="${lesson.questions ? JSON.stringify(lesson.questions).replace(/"/g, '&quot;') : '[]'}" />
+
+        <div class="modal-actions">
+          <button type="button" class="btn-sm secondary" onclick="closeModal('lessonModal');openModal('lessonsModal')">Cancelar</button>
+          <button type="submit" class="btn-sm" id="saveLessonBtn">Salvar aula</button>
+        </div>
+      </form>
+    `;
+  }
+
+  let lessonQuestions = [];
+
+  function openLessonForm(lessonId, lesson = null) {
+    closeModal('lessonsModal');
+    document.getElementById('lessonModalTitle').textContent = lessonId ? 'Editar Aula' : 'Nova Aula';
+    document.getElementById('lessonModalBody').innerHTML = buildLessonForm(lesson || {});
+    lessonQuestions = lesson && lesson.questions ? [...lesson.questions] : [];
+    renderQuestions();
+
+    document.getElementById('btnAddQuestion').addEventListener('click', () => {
+      lessonQuestions.push({ question: '', options: ['', '', '', ''], correctIndex: 0, explanation: '' });
+      renderQuestions();
+    });
+
+    document.getElementById('lessonForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      await saveLesson(lessonId);
+    });
+
+    openModal('lessonModal');
+  }
+
+  function renderQuestions() {
+    const container = document.getElementById('questionsContainer');
+    container.innerHTML = lessonQuestions.map((q, qi) => `
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <strong style="font-size:.85rem">Questão ${qi + 1}</strong>
+          <button type="button" class="btn-sm danger" onclick="removeQuestion(${qi})">Remover</button>
+        </div>
+        <div class="form-group">
+          <label>Pergunta</label>
+          <input type="text" value="${q.question || ''}" oninput="lessonQuestions[${qi}].question=this.value" placeholder="Qual é..." style="width:100%;padding:9px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:.85rem;outline:none" />
+        </div>
+        ${[0,1,2,3].map(oi => `
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <input type="radio" name="correct_${qi}" ${q.correctIndex === oi ? 'checked' : ''} onchange="lessonQuestions[${qi}].correctIndex=${oi}" style="accent-color:var(--accent)" title="Correta" />
+            <input type="text" value="${(q.options && q.options[oi]) || ''}" oninput="lessonQuestions[${qi}].options[${oi}]=this.value" placeholder="Opção ${oi + 1}" style="flex:1;padding:7px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:7px;color:var(--text);font-size:.83rem;outline:none" />
+          </div>
+        `).join('')}
+        <div class="form-group" style="margin-top:6px;margin-bottom:0">
+          <label>Explicação (opcional)</label>
+          <input type="text" value="${q.explanation || ''}" oninput="lessonQuestions[${qi}].explanation=this.value" placeholder="Por que esta é a resposta correta..." style="width:100%;padding:7px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:7px;color:var(--text);font-size:.82rem;outline:none" />
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.removeQuestion = (qi) => {
+    lessonQuestions.splice(qi, 1);
+    renderQuestions();
+  };
+
+  window.toggleLessonType = (type) => {
+    document.getElementById('videoFields').style.display    = type === 'video'    ? '' : 'none';
+    document.getElementById('activityFields').style.display = type === 'activity' ? '' : 'none';
+  };
+
+  async function saveLesson(lessonId) {
+    const btn = document.getElementById('saveLessonBtn');
+    btn.disabled = true; btn.textContent = 'Salvando...';
+    const type = document.getElementById('lf_type').value;
+    const body = {
+      title:       document.getElementById('lf_title').value.trim(),
+      type,
+      description: document.getElementById('lf_description').value.trim(),
+      ...(type === 'video' ? {
+        videoType:       document.getElementById('lf_videoType').value,
+        videoUrl:        document.getElementById('lf_videoUrl').value.trim(),
+        duration:        document.getElementById('lf_duration').value.trim(),
+        requiredPercent: parseInt(document.getElementById('lf_requiredPct').value) || 80,
+      } : {
+        activityTitle: document.getElementById('lf_actTitle').value.trim(),
+        questions:     lessonQuestions,
+      }),
+    };
+    try {
+      if (lessonId) {
+        await API.put(`/admin/courses/${currentCourseId}/lessons/${lessonId}`, body);
+        showToast('Aula atualizada!', 'success');
+      } else {
+        await API.post(`/admin/courses/${currentCourseId}/lessons`, body);
+        showToast('Aula adicionada!', 'success');
+      }
+      closeModal('lessonModal');
+      openModal('lessonsModal');
+      await renderLessonsModal();
+    } catch (err) {
+      showToast(err.message, 'error');
+      btn.disabled = false; btn.textContent = 'Salvar aula';
+    }
+  }
+
+  window.editLesson = async (lessonId) => {
+    try {
+      const data = await API.get(`/admin/courses/${currentCourseId}/lessons/${lessonId}`);
+      openLessonForm(lessonId, data.lesson);
+    } catch { showToast('Erro ao carregar aula', 'error'); }
+  };
+
+  window.deleteLesson = async (lessonId) => {
+    if (!confirm('Excluir esta aula?')) return;
+    try {
+      await API.del(`/admin/courses/${currentCourseId}/lessons/${lessonId}`);
+      showToast('Aula excluída.', 'success');
+      renderLessonsModal();
+    } catch (err) { showToast(err.message, 'error'); }
+  };
+
+  // ── Users ────────────────────────────────────────────────
+  async function loadUsers(search = '') {
+    try {
+      const data = await API.get(`/admin/users${search ? '?q=' + encodeURIComponent(search) : ''}`);
+      document.getElementById('usersList').innerHTML = data.users.map(u => `
+        <tr>
+          <td><strong>${u.name}</strong></td>
+          <td style="color:var(--text2)">${u.email}</td>
+          <td>Nv ${u.level}</td>
+          <td>${u.xp} XP</td>
+          <td>${u.enrollments || 0}</td>
+          <td style="color:var(--text3)">${new Date(u.createdAt).toLocaleDateString('pt-BR')}</td>
+          <td>
+            <button class="btn-sm danger" onclick="deleteUser('${u.id}')">Excluir</button>
+          </td>
+        </tr>
+      `).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:20px">Nenhum aluno encontrado</td></tr>';
+    } catch (err) { showToast('Erro ao carregar alunos', 'error'); }
+  }
+
+  window.deleteUser = async (id) => {
+    if (!confirm('Excluir este aluno? Todos os dados de progresso serão removidos.')) return;
+    try {
+      await API.del(`/admin/users/${id}`);
+      showToast('Aluno removido.', 'success');
+      loadUsers();
+    } catch (err) { showToast(err.message, 'error'); }
+  };
+
+  let searchTimer;
+  document.getElementById('searchUsers')?.addEventListener('input', e => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => loadUsers(e.target.value), 300);
+  });
+
+  // ── Export CSV ───────────────────────────────────────────
+  document.getElementById('btnExportCsv')?.addEventListener('click', async () => {
+    const token = localStorage.getItem('ca_token');
+    try {
+      const res = await fetch('/api/admin/export/users-csv', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) { showToast('Erro ao exportar', 'error'); return; }
+      const blob = await res.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `alunos_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      showToast('Erro ao exportar CSV', 'error');
+    }
+  });
+
+  // ── Utils ────────────────────────────────────────────────
+  function timeAgo(dateStr) {
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 1)   return 'agora';
+    if (m < 60)  return `${m}min atrás`;
+    const h = Math.floor(m / 60);
+    if (h < 24)  return `${h}h atrás`;
+    return `${Math.floor(h / 24)}d atrás`;
+  }
+
+  // Init
+  loadOverview();
+
+  window.initBell && window.initBell();
+
+  // Sidebar overlay for mobile
+  (function() {
+    const overlay = document.createElement('div');
+    overlay.id = 'sidebarOverlay';
+    overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;';
+    document.body.appendChild(overlay);
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    const toggle  = () => {
+      const open = sidebar.classList.toggle('open');
+      overlay.style.display = open ? 'block' : 'none';
+    };
+    document.querySelectorAll('[onclick*="sidebar"]').forEach(btn => {
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', toggle);
+    });
+    document.getElementById('sidebarToggle')?.addEventListener('click', toggle);
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.style.display = 'none';
+    });
+  })();
+</script>
+</body>
+</html>
