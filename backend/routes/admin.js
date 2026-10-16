@@ -7,10 +7,10 @@ const router = express.Router();
 router.use(adminOnly);
 
 // GET /api/admin/overview
-router.get('/overview', (req, res) => {
-  const users    = db.getUsers().filter(u => u.role !== 'admin');
-  const progress = db.getProgress();
-  const log      = db.getActivityLog();
+router.get('/overview', async (req, res) => {
+  const users    = (await db.getUsers()).filter(u => u.role !== 'admin');
+  const progress = await db.getProgress();
+  const log      = await db.getActivityLog();
   const now      = new Date();
   const weekAgo  = new Date(now - 7 * 86400000);
 
@@ -27,9 +27,9 @@ router.get('/overview', (req, res) => {
 // ── COURSES ──────────────────────────────────────────────
 
 // GET /api/admin/courses
-router.get('/courses', (req, res) => {
-  const courses  = db.getCourses();
-  const progress = db.getProgress();
+router.get('/courses', async (req, res) => {
+  const courses  = await db.getCourses();
+  const progress = await db.getProgress();
   res.json({
     courses: courses.map(c => ({
       ...c,
@@ -39,19 +39,19 @@ router.get('/courses', (req, res) => {
 });
 
 // GET /api/admin/courses/:id
-router.get('/courses/:id', (req, res) => {
-  const courses = db.getCourses();
+router.get('/courses/:id', async (req, res) => {
+  const courses = await db.getCourses();
   const course  = courses.find(c => c.id === req.params.id);
   if (!course) return res.status(404).json({ message: 'Não encontrado.' });
   res.json({ course });
 });
 
 // POST /api/admin/courses
-router.post('/courses', (req, res) => {
+router.post('/courses', async (req, res) => {
   const { name, shortDesc, description, level, emoji, duration, featured } = req.body;
   if (!name) return res.status(400).json({ message: 'Nome é obrigatório.' });
 
-  const courses = db.getCourses();
+  const courses = await db.getCourses();
   const course = {
     id: uuid(), name, shortDesc, description,
     level: level || 'Iniciante', emoji: emoji || '🎮',
@@ -60,13 +60,13 @@ router.post('/courses', (req, res) => {
     createdAt: new Date().toISOString(),
   };
   courses.push(course);
-  db.saveCourses(courses);
+  await db.saveCourses(courses);
   res.status(201).json({ course });
 });
 
 // PUT /api/admin/courses/:id
-router.put('/courses/:id', (req, res) => {
-  const courses = db.getCourses();
+router.put('/courses/:id', async (req, res) => {
+  const courses = await db.getCourses();
   const idx     = courses.findIndex(c => c.id === req.params.id);
   if (idx < 0) return res.status(404).json({ message: 'Não encontrado.' });
 
@@ -74,36 +74,36 @@ router.put('/courses/:id', (req, res) => {
   allowed.forEach(key => {
     if (req.body[key] !== undefined) courses[idx][key] = req.body[key];
   });
-  db.saveCourses(courses);
+  await db.saveCourses(courses);
   res.json({ course: courses[idx] });
 });
 
 // DELETE /api/admin/courses/:id
-router.delete('/courses/:id', (req, res) => {
-  const courses = db.getCourses();
+router.delete('/courses/:id', async (req, res) => {
+  const courses = await db.getCourses();
   const idx     = courses.findIndex(c => c.id === req.params.id);
   if (idx < 0) return res.status(404).json({ message: 'Não encontrado.' });
   courses.splice(idx, 1);
-  db.saveCourses(courses);
+  await db.saveCourses(courses);
   // Remove progresso vinculado
-  const progress = db.getProgress().filter(p => p.courseId !== req.params.id);
-  db.saveProgress(progress);
+  const progress = (await db.getProgress()).filter(p => p.courseId !== req.params.id);
+  await db.saveProgress(progress);
   res.json({ message: 'Excluído.' });
 });
 
 // ── LESSONS ──────────────────────────────────────────────
 
 // GET /api/admin/courses/:id/lessons
-router.get('/courses/:id/lessons', (req, res) => {
-  const courses = db.getCourses();
+router.get('/courses/:id/lessons', async (req, res) => {
+  const courses = await db.getCourses();
   const course  = courses.find(c => c.id === req.params.id);
   if (!course) return res.status(404).json({ message: 'Não encontrado.' });
   res.json({ lessons: course.lessons || [] });
 });
 
 // GET /api/admin/courses/:id/lessons/:lessonId
-router.get('/courses/:id/lessons/:lessonId', (req, res) => {
-  const courses = db.getCourses();
+router.get('/courses/:id/lessons/:lessonId', async (req, res) => {
+  const courses = await db.getCourses();
   const course  = courses.find(c => c.id === req.params.id);
   if (!course) return res.status(404).json({ message: 'Não encontrado.' });
   const lesson  = (course.lessons || []).find(l => l.id === req.params.lessonId);
@@ -112,8 +112,8 @@ router.get('/courses/:id/lessons/:lessonId', (req, res) => {
 });
 
 // POST /api/admin/courses/:id/lessons
-router.post('/courses/:id/lessons', (req, res) => {
-  const courses = db.getCourses();
+router.post('/courses/:id/lessons', async (req, res) => {
+  const courses = await db.getCourses();
   const idx     = courses.findIndex(c => c.id === req.params.id);
   if (idx < 0) return res.status(404).json({ message: 'Não encontrado.' });
 
@@ -130,13 +130,13 @@ router.post('/courses/:id/lessons', (req, res) => {
 
   if (!courses[idx].lessons) courses[idx].lessons = [];
   courses[idx].lessons.push(lesson);
-  db.saveCourses(courses);
+  await db.saveCourses(courses);
   res.status(201).json({ lesson });
 });
 
 // PUT /api/admin/courses/:id/lessons/:lessonId
-router.put('/courses/:id/lessons/:lessonId', (req, res) => {
-  const courses  = db.getCourses();
+router.put('/courses/:id/lessons/:lessonId', async (req, res) => {
+  const courses  = await db.getCourses();
   const cIdx     = courses.findIndex(c => c.id === req.params.id);
   if (cIdx < 0) return res.status(404).json({ message: 'Trilha não encontrada.' });
 
@@ -147,13 +147,13 @@ router.put('/courses/:id/lessons/:lessonId', (req, res) => {
   allowed.forEach(key => {
     if (req.body[key] !== undefined) courses[cIdx].lessons[lIdx][key] = req.body[key];
   });
-  db.saveCourses(courses);
+  await db.saveCourses(courses);
   res.json({ lesson: courses[cIdx].lessons[lIdx] });
 });
 
 // DELETE /api/admin/courses/:id/lessons/:lessonId
-router.delete('/courses/:id/lessons/:lessonId', (req, res) => {
-  const courses = db.getCourses();
+router.delete('/courses/:id/lessons/:lessonId', async (req, res) => {
+  const courses = await db.getCourses();
   const cIdx    = courses.findIndex(c => c.id === req.params.id);
   if (cIdx < 0) return res.status(404).json({ message: 'Trilha não encontrada.' });
 
@@ -161,17 +161,17 @@ router.delete('/courses/:id/lessons/:lessonId', (req, res) => {
   if (lIdx < 0) return res.status(404).json({ message: 'Aula não encontrada.' });
 
   courses[cIdx].lessons.splice(lIdx, 1);
-  db.saveCourses(courses);
+  await db.saveCourses(courses);
   res.json({ message: 'Aula excluída.' });
 });
 
 // ── USERS ─────────────────────────────────────────────────
 
 // GET /api/admin/users
-router.get('/users', (req, res) => {
+router.get('/users', async (req, res) => {
   const { q } = req.query;
-  const progress = db.getProgress();
-  let users = db.getUsers().filter(u => u.role !== 'admin');
+  const progress = await db.getProgress();
+  let users = (await db.getUsers()).filter(u => u.role !== 'admin');
   if (q) {
     const lower = q.toLowerCase();
     users = users.filter(u => u.name.toLowerCase().includes(lower) || u.email.toLowerCase().includes(lower));
@@ -185,23 +185,23 @@ router.get('/users', (req, res) => {
 });
 
 // DELETE /api/admin/users/:id
-router.delete('/users/:id', (req, res) => {
-  const users = db.getUsers();
+router.delete('/users/:id', async (req, res) => {
+  const users = await db.getUsers();
   const idx   = users.findIndex(u => u.id === req.params.id);
   if (idx < 0) return res.status(404).json({ message: 'Não encontrado.' });
   if (users[idx].role === 'admin') return res.status(403).json({ message: 'Não é possível excluir administrador.' });
 
   users.splice(idx, 1);
-  db.saveUsers(users);
-  const progress = db.getProgress().filter(p => p.userId !== req.params.id);
-  db.saveProgress(progress);
+  await db.saveUsers(users);
+  const progress = (await db.getProgress()).filter(p => p.userId !== req.params.id);
+  await db.saveProgress(progress);
   res.json({ message: 'Aluno removido.' });
 });
 
 // GET /api/admin/export/users-csv — exporta alunos em formato CSV
-router.get('/export/users-csv', (req, res) => {
-  const progress = db.getProgress();
-  const users = db.getUsers().filter(u => u.role !== 'admin');
+router.get('/export/users-csv', async (req, res) => {
+  const progress = await db.getProgress();
+  const users = (await db.getUsers()).filter(u => u.role !== 'admin');
 
   const header = ['id','nome','email','nivel','xp','streak','trilhas_matriculadas','cadastro'].join(',');
   const rows = users.map(u => {

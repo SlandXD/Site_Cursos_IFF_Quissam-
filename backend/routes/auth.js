@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
     if (password.length < 6)
       return res.status(400).json({ message: 'Senha deve ter pelo menos 6 caracteres.' });
 
-    const users = db.getUsers();
+    const users = await db.getUsers();
     if (users.find(u => u.email.toLowerCase() === email.toLowerCase()))
       return res.status(409).json({ message: 'Este e-mail já está cadastrado.' });
 
@@ -42,12 +42,12 @@ router.post('/register', async (req, res) => {
       createdAt: new Date().toISOString(),
     };
     users.push(user);
-    db.saveUsers(users);
+    await db.saveUsers(users);
 
     // Log activity
-    const log = db.getActivityLog();
+    const log = await db.getActivityLog();
     log.push({ userId: user.id, userName: user.name, action: 'Cadastrou-se', createdAt: new Date().toISOString() });
-    db.saveActivityLog(log);
+    await db.saveActivityLog(log);
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
     const { password: _, ...safeUser } = user;
@@ -65,7 +65,7 @@ router.post('/login', loginLimiter, async (req, res) => {
     if (!email || !password)
       return res.status(400).json({ message: 'Preencha todos os campos.' });
 
-    const users = db.getUsers();
+    const users = await db.getUsers();
     const user  = users.find(u => u.email.toLowerCase() === email.toLowerCase());
     if (!user)
       return res.status(401).json({ message: 'E-mail ou senha incorretos.' });
@@ -101,11 +101,11 @@ router.post('/login', loginLimiter, async (req, res) => {
       user.streak = 1;
     }
     user.lastLogin = now.toISOString();
-    db.saveUsers(users);
+    await db.saveUsers(users);
 
-    const log = db.getActivityLog();
+    const log = await db.getActivityLog();
     log.push({ userId: user.id, userName: user.name, action: 'Fez login', createdAt: now.toISOString() });
-    db.saveActivityLog(log);
+    await db.saveActivityLog(log);
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
     const { password: _, ...safeUser } = user;
@@ -119,11 +119,11 @@ router.post('/login', loginLimiter, async (req, res) => {
 // POST /api/auth/forgot-password
 // Gera token de 6 dígitos, armazena no usuário e retorna na resposta.
 // Em produção, esse token seria enviado por e-mail. Aqui retornamos diretamente para fins de demo.
-router.post('/forgot-password', (req, res) => {
+router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ message: 'Informe o e-mail.' });
 
-  const users = db.getUsers();
+  const users = await db.getUsers();
   const user  = users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
   // Por segurança, sempre retornar 200 (não revelar se e-mail existe)
@@ -134,7 +134,7 @@ router.post('/forgot-password', (req, res) => {
 
   user.resetToken   = token;
   user.resetExpires = expiresAt;
-  db.saveUsers(users);
+  await db.saveUsers(users);
 
   // Em demo: retorna o token na resposta. Em produção: enviar por e-mail e não retornar aqui.
   res.json({
@@ -152,7 +152,7 @@ router.post('/reset-password', async (req, res) => {
   if (newPassword.length < 6)
     return res.status(400).json({ message: 'Senha deve ter pelo menos 6 caracteres.' });
 
-  const users = db.getUsers();
+  const users = await db.getUsers();
   const user  = users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
   if (!user || !user.resetToken || user.resetToken !== token)
@@ -164,7 +164,7 @@ router.post('/reset-password', async (req, res) => {
   user.password     = await bcrypt.hash(newPassword, 10);
   user.resetToken   = undefined;
   user.resetExpires = undefined;
-  db.saveUsers(users);
+  await db.saveUsers(users);
 
   res.json({ message: 'Senha redefinida com sucesso. Faça login.' });
 });

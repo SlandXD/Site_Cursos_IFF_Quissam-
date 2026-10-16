@@ -8,13 +8,13 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // GET /api/student/dashboard
-router.get('/dashboard', (req, res) => {
-  const users    = db.getUsers();
+router.get('/dashboard', async (req, res) => {
+  const users    = await db.getUsers();
   const user     = users.find(u => u.id === req.user.id);
   if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
 
-  const courses  = db.getCourses();
-  const progress = db.getProgress().filter(p => p.userId === req.user.id);
+  const courses  = await db.getCourses();
+  const progress = (await db.getProgress()).filter(p => p.userId === req.user.id);
 
   const enrollments = progress.map(p => {
     const course = courses.find(c => c.id === p.courseId);
@@ -65,8 +65,8 @@ router.get('/dashboard', (req, res) => {
 });
 
 // GET /api/student/profile
-router.get('/profile', (req, res) => {
-  const users = db.getUsers();
+router.get('/profile', async (req, res) => {
+  const users = await db.getUsers();
   const user  = users.find(u => u.id === req.user.id);
   if (!user) return res.status(404).json({ message: 'Não encontrado.' });
   const { password: _, ...safe } = user;
@@ -74,9 +74,9 @@ router.get('/profile', (req, res) => {
 });
 
 // PUT /api/student/profile
-router.put('/profile', (req, res) => {
+router.put('/profile', async (req, res) => {
   const { name, email, avatar } = req.body;
-  const users = db.getUsers();
+  const users = await db.getUsers();
   const idx   = users.findIndex(u => u.id === req.user.id);
   if (idx < 0) return res.status(404).json({ message: 'Não encontrado.' });
 
@@ -91,7 +91,7 @@ router.put('/profile', (req, res) => {
     const trimmed = String(avatar).trim().slice(0, 10);
     users[idx].avatar = trimmed || null;
   }
-  db.saveUsers(users);
+  await db.saveUsers(users);
   const { password: _, ...safe } = users[idx];
   res.json({ message: 'Perfil atualizado.', user: safe });
 });
@@ -99,7 +99,7 @@ router.put('/profile', (req, res) => {
 // PUT /api/student/password
 router.put('/password', async (req, res) => {
   const { currentPassword, newPassword } = req.body;
-  const users = db.getUsers();
+  const users = await db.getUsers();
   const idx   = users.findIndex(u => u.id === req.user.id);
   if (idx < 0) return res.status(404).json({ message: 'Não encontrado.' });
 
@@ -109,18 +109,18 @@ router.put('/password', async (req, res) => {
     return res.status(400).json({ message: 'Nova senha muito curta.' });
 
   users[idx].password = await bcrypt.hash(newPassword, 10);
-  db.saveUsers(users);
+  await db.saveUsers(users);
   res.json({ message: 'Senha atualizada.' });
 });
 
 // GET /api/student/achievements
-router.get('/achievements', (req, res) => {
-  const users    = db.getUsers();
+router.get('/achievements', async (req, res) => {
+  const users    = await db.getUsers();
   const user     = users.find(u => u.id === req.user.id);
   if (!user) return res.status(404).json({ message: 'Não encontrado.' });
 
-  const courses  = db.getCourses();
-  const progress = db.getProgress().filter(p => p.userId === req.user.id && p.completed);
+  const courses  = await db.getCourses();
+  const progress = (await db.getProgress()).filter(p => p.userId === req.user.id && p.completed);
 
   const certificates = progress.map(p => {
     const course = courses.find(c => c.id === p.courseId);
@@ -139,8 +139,8 @@ router.get('/achievements', (req, res) => {
 });
 
 // GET /api/student/ranking
-router.get('/ranking', (req, res) => {
-  const users = db.getUsers().filter(u => u.role !== 'admin');
+router.get('/ranking', async (req, res) => {
+  const users = (await db.getUsers()).filter(u => u.role !== 'admin');
 
   const sorted = users
     .map(u => ({

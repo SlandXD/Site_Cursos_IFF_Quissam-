@@ -7,9 +7,9 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // GET /api/courses — lista todos os cursos (com progresso do aluno) e suporte a paginação
-router.get('/', (req, res) => {
-  const courses  = db.getCourses();
-  const progress = db.getProgress().filter(p => p.userId === req.user.id);
+router.get('/', async (req, res) => {
+  const courses  = await db.getCourses();
+  const progress = (await db.getProgress()).filter(p => p.userId === req.user.id);
 
   const result = courses.map(c => {
     const p   = progress.find(p => p.courseId === c.id);
@@ -45,12 +45,12 @@ router.get('/', (req, res) => {
 });
 
 // GET /api/courses/:id — detalhe do curso com status de cada aula
-router.get('/:id', (req, res) => {
-  const courses = db.getCourses();
+router.get('/:id', async (req, res) => {
+  const courses = await db.getCourses();
   const course  = courses.find(c => c.id === req.params.id);
   if (!course) return res.status(404).json({ message: 'Trilha não encontrada.' });
 
-  const progress = db.getProgress().find(p => p.userId === req.user.id && p.courseId === course.id);
+  const progress = (await db.getProgress()).find(p => p.userId === req.user.id && p.courseId === course.id);
   const enrolled = !!progress;
   const completed = progress ? (progress.completedLessons || []) : [];
 
@@ -76,12 +76,12 @@ router.get('/:id', (req, res) => {
 });
 
 // POST /api/courses/:id/enroll — matricular aluno
-router.post('/:id/enroll', (req, res) => {
-  const courses = db.getCourses();
+router.post('/:id/enroll', async (req, res) => {
+  const courses = await db.getCourses();
   const course  = courses.find(c => c.id === req.params.id);
   if (!course) return res.status(404).json({ message: 'Trilha não encontrada.' });
 
-  const progress = db.getProgress();
+  const progress = await db.getProgress();
   if (progress.find(p => p.userId === req.user.id && p.courseId === course.id))
     return res.status(409).json({ message: 'Já matriculado.' });
 
@@ -93,30 +93,30 @@ router.post('/:id/enroll', (req, res) => {
     completed:        false,
     enrolledAt:       new Date().toISOString(),
   });
-  db.saveProgress(progress);
+  await db.saveProgress(progress);
 
   // Log
-  const users = db.getUsers();
+  const users = await db.getUsers();
   const user  = users.find(u => u.id === req.user.id);
-  const log   = db.getActivityLog();
+  const log   = await db.getActivityLog();
   log.push({ userId: req.user.id, userName: user?.name || '—', action: 'Matriculou-se', courseName: course.name, createdAt: new Date().toISOString() });
-  db.saveActivityLog(log);
+  await db.saveActivityLog(log);
 
   res.json({ message: 'Matriculado com sucesso.' });
 });
 
 // GET /api/courses/:id/lessons/:lessonId — dados da aula para o player
-router.get('/:id/lessons/:lessonId', (req, res) => {
-  const courses = db.getCourses();
+router.get('/:id/lessons/:lessonId', async (req, res) => {
+  const courses = await db.getCourses();
   const course  = courses.find(c => c.id === req.params.id);
   if (!course) return res.status(404).json({ message: 'Trilha não encontrada.' });
 
   const lesson = (course.lessons || []).find(l => l.id === req.params.lessonId);
   if (!lesson) return res.status(404).json({ message: 'Aula não encontrada.' });
 
-  const users    = db.getUsers();
+  const users    = await db.getUsers();
   const user     = users.find(u => u.id === req.user.id);
-  const progress = db.getProgress().find(p => p.userId === req.user.id && p.courseId === course.id);
+  const progress = (await db.getProgress()).find(p => p.userId === req.user.id && p.courseId === course.id);
 
   if (!progress)
     return res.status(403).json({ message: 'Você não está matriculado nesta trilha.' });
@@ -178,15 +178,15 @@ router.get('/:id/lessons/:lessonId', (req, res) => {
 });
 
 // POST /api/courses/:id/lessons/:lessonId/complete — marca aula como concluída
-router.post('/:id/lessons/:lessonId/complete', (req, res) => {
-  const courses = db.getCourses();
+router.post('/:id/lessons/:lessonId/complete', async (req, res) => {
+  const courses = await db.getCourses();
   const course  = courses.find(c => c.id === req.params.id);
   if (!course) return res.status(404).json({ message: 'Trilha não encontrada.' });
 
   const lesson = (course.lessons || []).find(l => l.id === req.params.lessonId);
   if (!lesson) return res.status(404).json({ message: 'Aula não encontrada.' });
 
-  const progressList = db.getProgress();
+  const progressList = await db.getProgress();
   const pIdx = progressList.findIndex(p => p.userId === req.user.id && p.courseId === course.id);
   if (pIdx < 0) return res.status(403).json({ message: 'Não matriculado.' });
 
@@ -198,7 +198,7 @@ router.post('/:id/lessons/:lessonId/complete', (req, res) => {
 
   // XP ganho apenas se a aula não foi concluída antes
   const xpGained = alreadyCompleted ? 0 : (lesson.type === 'video' ? 10 : 15);
-  const users    = db.getUsers();
+  const users    = await db.getUsers();
   const uIdx     = users.findIndex(u => u.id === req.user.id);
   if (!alreadyCompleted) {
     users[uIdx].xp += xpGained;
@@ -230,8 +230,8 @@ router.post('/:id/lessons/:lessonId/complete', (req, res) => {
   // Badge primeira aula
   if (!alreadyCompleted && p.completedLessons.length === 1) grantBadge(users[uIdx], 'first_lesson');
 
-  db.saveProgress(progressList);
-  db.saveUsers(users);
+  await db.saveProgress(progressList);
+  await db.saveUsers(users);
 
   // Próxima aula
   const lessonIdx  = course.lessons.findIndex(l => l.id === lesson.id);
@@ -256,9 +256,9 @@ router.post('/:id/lessons/:lessonId/complete', (req, res) => {
   } : null;
 
   // Log
-  const log = db.getActivityLog();
+  const log = await db.getActivityLog();
   log.push({ userId: req.user.id, userName: users[uIdx].name, action: 'Concluiu aula', courseName: course.name, createdAt: new Date().toISOString() });
-  db.saveActivityLog(log);
+  await db.saveActivityLog(log);
 
   res.json({
     xpGained,
@@ -274,9 +274,9 @@ router.post('/:id/lessons/:lessonId/complete', (req, res) => {
 });
 
 // POST /api/courses/:id/lessons/:lessonId/activity — submete atividade
-router.post('/:id/lessons/:lessonId/activity', (req, res) => {
+router.post('/:id/lessons/:lessonId/activity', async (req, res) => {
   const { score } = req.body;
-  const courses   = db.getCourses();
+  const courses   = await db.getCourses();
   const course    = courses.find(c => c.id === req.params.id);
   if (!course) return res.status(404).json({ message: 'Trilha não encontrada.' });
 
@@ -285,7 +285,7 @@ router.post('/:id/lessons/:lessonId/activity', (req, res) => {
 
   if (score < 70) return res.json({ passed: false, message: 'Tente novamente.' });
 
-  const progressList = db.getProgress();
+  const progressList = await db.getProgress();
   const pIdx = progressList.findIndex(p => p.userId === req.user.id && p.courseId === course.id);
   if (pIdx < 0) return res.status(403).json({ message: 'Não matriculado.' });
 
@@ -300,7 +300,7 @@ router.post('/:id/lessons/:lessonId/activity', (req, res) => {
   p.activityScores[lesson.id] = score;
 
   const xpGained = activityAlreadyDone ? 0 : (15 + Math.floor(score / 20) * 5);
-  const users    = db.getUsers();
+  const users    = await db.getUsers();
   const uIdx     = users.findIndex(u => u.id === req.user.id);
   if (!activityAlreadyDone) {
     users[uIdx].xp += xpGained;
@@ -335,17 +335,17 @@ router.post('/:id/lessons/:lessonId/activity', (req, res) => {
     }
   }
 
-  db.saveProgress(progressList);
-  db.saveUsers(users);
+  await db.saveProgress(progressList);
+  await db.saveUsers(users);
 
   const lessonIdx  = course.lessons.findIndex(l => l.id === lesson.id);
   const nextIdx    = lessonIdx + 1;
   const nextLesson = nextIdx < course.lessons.length ? course.lessons[nextIdx] : null;
 
   // Log
-  const log = db.getActivityLog();
+  const log = await db.getActivityLog();
   log.push({ userId: req.user.id, userName: users[uIdx].name, action: `Atividade (${score}%)`, courseName: course.name, createdAt: new Date().toISOString() });
-  db.saveActivityLog(log);
+  await db.saveActivityLog(log);
 
   res.json({
     passed: true, xpGained,
