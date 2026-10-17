@@ -43,6 +43,11 @@ app.use('/api/student', require('./routes/student'));
 app.use('/api/courses', require('./routes/courses'));
 app.use('/api/admin',   require('./routes/admin'));
 
+// ── Health Check ──────────────────────────────────────────
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // Stats públicas (landing page)
 app.get('/api/stats', async (req, res) => {
   try {
@@ -190,6 +195,22 @@ async function start() {
     app.listen(PORT, () => {
       console.log(`\n🚀 Construct Academy rodando em http://localhost:${PORT}`);
       console.log(`   Admin: admin@constructacademy.com / admin123\n`);
+
+      // Auto-ping: evita que o Render adormeça por inatividade
+      const SELF_URL = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
+      if (process.env.NODE_ENV !== 'development') {
+        const https = require('https');
+        const http  = require('http');
+        setInterval(() => {
+          const lib = SELF_URL.startsWith('https') ? https : http;
+          lib.get(`${SELF_URL}/health`, (res) => {
+            console.log(`[ping] /health → ${res.statusCode}`);
+          }).on('error', (err) => {
+            console.warn('[ping] Falha no auto-ping:', err.message);
+          });
+        }, 14 * 60 * 1000); // a cada 14 minutos
+        console.log(`♻️  Auto-ping ativado → ${SELF_URL}/health (a cada 14 min)`);
+      }
     });
   } catch (err) {
     console.error('Erro ao iniciar servidor:', err);
