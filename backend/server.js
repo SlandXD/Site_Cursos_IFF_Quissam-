@@ -25,6 +25,7 @@ const globalLimiter = rateLimit({
 });
 
 // ── Middleware ────────────────────────────────────────────
+app.set('trust proxy', 1); // Necessário para funcionar atrás do proxy do Render
 app.use(globalLimiter);
 app.use(cors());
 app.use(express.json());
