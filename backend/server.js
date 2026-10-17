@@ -89,6 +89,15 @@ app.get('/api/stats/courses', async (req, res) => {
   }
 });
 
+// ── Middleware de erro global ─────────────────────────────
+// Captura qualquer erro não tratado nas rotas async
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error('[unhandled]', err);
+  if (res.headersSent) return;
+  res.status(500).json({ message: 'Erro interno do servidor.' });
+});
+
 // SPA fallback
 const p404local = path.join(__dirname, '..', 'frontend', 'public', 'pages', '404.html');
 const p404alt   = path.join(__dirname, 'frontend', 'public', 'pages', '404.html');

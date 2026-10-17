@@ -56,6 +56,51 @@
 
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/main.js"></script>
+
+<!-- MODAL: Recuperação de senha — deve vir ANTES do script que referencia seus elementos -->
+<div
+  class="modal-overlay"
+  id="forgotModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="forgotModalTitle"
+  style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center"
+>
+  <div class="modal" style="max-width:420px;width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:28px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h3 id="forgotModalTitle" style="font-size:1rem;font-weight:700">Recuperar senha</h3>
+      <button id="closeForgotModal" aria-label="Fechar modal" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--text3)">✕</button>
+    </div>
+
+    <!-- Passo 1: solicitar código -->
+    <div id="step1">
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:16px">Informe seu e-mail para receber o código de 6 dígitos.</p>
+      <div class="form-group">
+        <label for="forgotEmail">E-mail</label>
+        <input type="email" id="forgotEmail" placeholder="seu@email.com" autocomplete="email" />
+      </div>
+      <div class="form-error" id="forgotError1" role="alert"></div>
+      <button class="btn-form" id="btnSendCode">Enviar código</button>
+      <p id="demoCode" style="margin-top:12px;font-size:.8rem;color:var(--text3);text-align:center;display:none"></p>
+    </div>
+
+    <!-- Passo 2: inserir código e nova senha -->
+    <div id="step2" style="display:none">
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:16px">Insira o código recebido e a nova senha.</p>
+      <div class="form-group">
+        <label for="resetToken">Código de 6 dígitos</label>
+        <input type="text" id="resetToken" maxlength="6" placeholder="000000" autocomplete="one-time-code" />
+      </div>
+      <div class="form-group">
+        <label for="newPasswordReset">Nova senha</label>
+        <input type="password" id="newPasswordReset" placeholder="Mínimo 6 caracteres" minlength="6" autocomplete="new-password" />
+      </div>
+      <div class="form-error" id="forgotError2" role="alert"></div>
+      <button class="btn-form" id="btnResetPass">Redefinir senha</button>
+    </div>
+  </div>
+</div>
+
   <script>
     // Redirecionar se já logado
     if (localStorage.getItem('ca_token')) {
@@ -88,17 +133,33 @@
     });
 
     // ── Forgot password modal ──
-    const forgotModal = document.getElementById('forgotModal');
-    document.getElementById('forgotLink').addEventListener('click', e => {
-      e.preventDefault();
+    const forgotModal  = document.getElementById('forgotModal');
+    const firstFocusEl = document.getElementById('forgotEmail');
+
+    function openForgotModal() {
       forgotModal.style.display = 'flex';
-    });
-    document.getElementById('closeForgotModal').addEventListener('click', () => {
+      firstFocusEl.focus();
+    }
+
+    function closeForgotModal() {
       forgotModal.style.display = 'none';
       document.getElementById('step1').style.display = '';
       document.getElementById('step2').style.display = 'none';
       document.getElementById('forgotError1').classList.remove('show');
       document.getElementById('forgotError2').classList.remove('show');
+      document.getElementById('forgotLink').focus(); // devolve foco ao link que abriu
+    }
+
+    document.getElementById('forgotLink').addEventListener('click', e => {
+      e.preventDefault();
+      openForgotModal();
+    });
+
+    document.getElementById('closeForgotModal').addEventListener('click', closeForgotModal);
+
+    // Fechar com Esc
+    forgotModal.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeForgotModal();
     });
 
     let forgotEmailValue = '';
@@ -114,6 +175,7 @@
         forgotEmailValue = email;
         document.getElementById('step1').style.display = 'none';
         document.getElementById('step2').style.display = '';
+        document.getElementById('resetToken').focus();
         // Mostrar código em modo demo
         if (data.token) {
           const demoEl = document.getElementById('demoCode');
@@ -135,49 +197,13 @@
       try {
         await API.post('/auth/reset-password', { email: forgotEmailValue, token, newPassword });
         showToast('Senha redefinida! Faça login.', 'success');
-        forgotModal.style.display = 'none';
+        closeForgotModal();
       } catch (err) {
         errEl.textContent = err.message || 'Erro.';
         errEl.classList.add('show');
       }
     });
   </script>
-<!-- MODAL: Recuperação de senha -->
-<div class="modal-overlay" id="forgotModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center">
-  <div class="modal" style="max-width:420px;width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:28px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-      <h3 style="font-size:1rem;font-weight:700">Recuperar senha</h3>
-      <button id="closeForgotModal" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--text3)">✕</button>
-    </div>
-
-    <!-- Passo 1: solicitar código -->
-    <div id="step1">
-      <p style="font-size:.85rem;color:var(--text2);margin-bottom:16px">Informe seu e-mail para receber o código de 6 dígitos.</p>
-      <div class="form-group">
-        <label>E-mail</label>
-        <input type="email" id="forgotEmail" placeholder="seu@email.com" />
-      </div>
-      <div class="form-error" id="forgotError1"></div>
-      <button class="btn-form" id="btnSendCode">Enviar código</button>
-      <p id="demoCode" style="margin-top:12px;font-size:.8rem;color:var(--text3);text-align:center;display:none"></p>
-    </div>
-
-    <!-- Passo 2: inserir código e nova senha -->
-    <div id="step2" style="display:none">
-      <p style="font-size:.85rem;color:var(--text2);margin-bottom:16px">Insira o código recebido e a nova senha.</p>
-      <div class="form-group">
-        <label>Código de 6 dígitos</label>
-        <input type="text" id="resetToken" maxlength="6" placeholder="000000" />
-      </div>
-      <div class="form-group">
-        <label>Nova senha</label>
-        <input type="password" id="newPasswordReset" placeholder="Mínimo 6 caracteres" minlength="6" />
-      </div>
-      <div class="form-error" id="forgotError2"></div>
-      <button class="btn-form" id="btnResetPass">Redefinir senha</button>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>

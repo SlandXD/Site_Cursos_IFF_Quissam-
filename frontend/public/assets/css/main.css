@@ -4,6 +4,15 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Foco visível global: garante navegação por teclado acessível */
+:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+/* Remove outline apenas quando não navegando por teclado */
+:focus:not(:focus-visible) { outline: none; }
+
 :root {
   --bg:        #0a0a0f;
   --bg2:       #0f0f18;
@@ -464,7 +473,8 @@ img { max-width: 100%; }
   border-radius: 9px; color: var(--text); font-size: .9rem;
   outline: none; transition: border-color var(--transition);
 }
-.form-group input:focus { border-color: var(--accent); }
+.form-group input:focus,
+.form-group input:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,.25); outline: none; }
 .form-group input::placeholder { color: var(--text3); }
 .btn-form {
   width: 100%; padding: 13px;

@@ -73,8 +73,21 @@ window.showToast = (msg, type = 'success') => {
   const icons = { success: '✓', error: '✕', info: 'ℹ' };
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  toast.innerHTML = `<span>${icons[type] || '✓'}</span><span>${msg}</span>`;
+  toast.setAttribute('role', 'status');
+  toast.setAttribute('aria-live', 'polite');
+
+  // Constrói sem innerHTML para evitar injeção de HTML
+  const iconSpan = document.createElement('span');
+  iconSpan.setAttribute('aria-hidden', 'true');
+  iconSpan.textContent = icons[type] || '✓';
+
+  const msgSpan = document.createElement('span');
+  msgSpan.textContent = msg; // textContent é sempre seguro
+
+  toast.appendChild(iconSpan);
+  toast.appendChild(msgSpan);
   container.appendChild(toast);
+
   setTimeout(() => {
     toast.style.transition = 'opacity .3s';
     toast.style.opacity = '0';
